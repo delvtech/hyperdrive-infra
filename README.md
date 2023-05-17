@@ -1,17 +1,39 @@
 # Hyperdrive Infrastructure
 
 All of the infrastructure related to Hyperdrive is held within a single docker
-compose app.
-
-## Running the Hyperdrive Testnet
-
-To run the Hyperdrive testnet as a daemon, run the following command:
-
-```
-docker compose up -d
-```
-
-This will spin up several services:
+compose app. The compose app is composed of several services:
 - ethereum: Runs an Ethereum node.
 - migrations: Migrates the Hyperdrive contracts onto the Ethereum node.
 - artifacts: A file server that serves up artifacts about the Hyperdrive deployment.
+
+## Pre-requisites
+
+Start by [installing docker](https://docs.docker.com/engine/install/) on the
+machine that will be used to run the compose app. The docker compose app makes
+use of several images that are hosted on a private Github package. To access
+these images, you will need to [create a Github personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic). Once you have your personal access token, you will
+use it to login to the Github registry:
+
+```
+$ docker login ghcr.io -u USERNAME
+Password:
+```
+
+Paste your personal access token in the `Password:` field that pops up.
+
+## Pulling the images
+
+Run `docker compose pull`
+
+## Running the app
+
+Run `docker compose up -d` to run the compose app as a daemon process (in the
+background).
+
+You can see the status of the running containers with `docker ps` and can tail
+logs with `docker logs CONTAINER_NAME -f`.
+
+## Tearing down the app
+
+Run `docker compose down -v`. The `-v` ensures that the volumes that were
+created are deleted.
