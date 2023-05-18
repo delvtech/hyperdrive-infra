@@ -1,8 +1,12 @@
 name: Publish the artifacts image
 
 on:
+  workflow_dispatch:
   push:
-    branches: ["main"]
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
 
 env:
   REGISTRY: ghcr.io
