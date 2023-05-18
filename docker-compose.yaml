@@ -5,7 +5,7 @@ services:
     command: |
       'anvil --accounts 30 --block-time 12 --host 0.0.0.0'
   migrations:
-    image: ghcr.io/delvtech/hyperdrive/migrations:jalextowle-infra-private-testnet
+    image: ghcr.io/delvtech/hyperdrive/migrations:nightly-bcf16d2130aa751e1ac730c28333bd0e701824a9
     environment:
       - ETH_FROM=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
       - PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
@@ -13,7 +13,7 @@ services:
     volumes:
       - artifacts:/src/artifacts/
   artifacts:
-    image: ghcr.io/delvtech/infra/artifacts:main
+    image: ghcr.io/delvtech/infra/artifacts:nightly-9b5cd7b753e578ce7b538d5458134f022574d1eb
     volumes:
       - artifacts:/var/www/artifacts/
 volumes:
