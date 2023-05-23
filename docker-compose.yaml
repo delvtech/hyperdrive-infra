@@ -19,5 +19,12 @@ services:
     image: ghcr.io/delvtech/infra/artifacts:0.0.1
     volumes:
       - artifacts:/var/www/artifacts/
+  bot:
+    image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-4f2b6f942921d91a279eb5e843f4c306453d98ad
+    command: |
+      'python examples/testy_bots.py'
+    environment:
+      - MNEMONIC="test test test test test test test test test test test junk"
+      - RPC_URL=http://ethereum:8545
 volumes:
   artifacts:
