@@ -19,5 +19,7 @@ services:
     image: ghcr.io/delvtech/infra/artifacts:0.0.1
     volumes:
       - artifacts:/var/www/artifacts/
+    ports:
+      - 80:80
 volumes:
   artifacts:
