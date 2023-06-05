@@ -29,7 +29,7 @@ services:
     # 2022-05-31 afer "generalized bot settings working with FixedPoint" (#484)
     # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2ef72dd9879511d639695b83b35fb2463b6b2ca6
     # local elf-sims pointing to IHyperdrive
-    image: elf-sims:latest
+    image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2eebd2991ceaab5db0b3f2703fcb667412508c25
     working_dir: /app/
     command: "/bin/sh -c 'python examples/evm_bots.py --devnet --rpc_url=http://ethereum:8545'"
 volumes:
