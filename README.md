@@ -27,6 +27,18 @@ Password:
 
 Paste your personal access token in the `Password:` field that pops up.
 
+## Setting up environment
+
+Pick an environment file in `env/` and copy to `.env`
+- `env.devnet`: Builds standalone devnet
+- `env.debug`: Builds standalone devnet with local ports open
+- `env.all`: Builds devnet and bots container
+
+For example
+```
+$ cp env/env.all .env
+```
+
 ## Pulling the images
 
 Run `docker compose pull`

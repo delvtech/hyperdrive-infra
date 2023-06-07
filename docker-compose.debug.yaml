@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+
+  ethereum:
+    ports:
+      - ${ETH_PORT}:8545
+
+  artifacts:
+    ports:
+      - ${ARTIFACT_PORT}:80
+
