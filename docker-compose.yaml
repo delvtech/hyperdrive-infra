@@ -11,21 +11,21 @@ services:
     ports:
       - 8545:8545
 
-  migrations:
-    # 2022-04-10 after 4216273fa644194ab350d9446225b2118c52b98b
-    # image: ghcr.io/delvtech/hyperdrive/migrations:nightly-f17bc5c65937626a49f3606666f3d4864532c934
-    # 2022-05-31
-    # image: ghcr.io/delvtech/hyperdrive/migrations:nightly-3188e7df62a07a77c61c467ab640aeec836c79fe # v0.02
-    image: ghcr.io/delvtech/hyperdrive/migrations:nightly-1ace4ee30318a75f7780f5ca6c6b9cc714377bd8 # v0.0.2 w/ prints
-    environment:
-      - ETH_FROM=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-      - PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-      - RPC_URL=http://ethereum:8545
-    volumes:
-      - artifacts:/src/artifacts/
-    # TODO: This is a band-aid solution for the memory leaks experienced on
-    # Apple Silicon. Remove the restart policy when this reliably starts.
-    restart: on-failure:5
+  # migrations:
+  #   # 2022-04-10 after 4216273fa644194ab350d9446225b2118c52b98b
+  #   # image: ghcr.io/delvtech/hyperdrive/migrations:nightly-f17bc5c65937626a49f3606666f3d4864532c934
+  #   # 2022-05-31
+  #   # image: ghcr.io/delvtech/hyperdrive/migrations:nightly-3188e7df62a07a77c61c467ab640aeec836c79fe # v0.02
+  #   image: ghcr.io/delvtech/hyperdrive/migrations:nightly-62696e9a371da64aa0facf5865f580747a067d36 # v0.0.2 w/ prints
+  #   environment:
+  #     - ETH_FROM=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  #     - PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+  #     - RPC_URL=http://ethereum:8545
+  #   volumes:
+  #     - artifacts:/src/artifacts/
+  #   # TODO: This is a band-aid solution for the memory leaks experienced on
+  #   # Apple Silicon. Remove the restart policy when this reliably starts.
+  #   restart: on-failure:5
 
   artifacts:
     image: ghcr.io/delvtech/infra/artifacts:0.0.1
