@@ -30,9 +30,10 @@ Paste your personal access token in the `Password:` field that pops up.
 ## Setting up environment
 
 Pick an environment file in `env/` and copy to `.env`
-- `env.devnet`: Builds standalone devnet
+- `env.devnet`: Builds standalone devnet without local ports open
 - `env.debug`: Builds standalone devnet with local ports open
-- `env.all`: Builds devnet and bots container
+- `env.all`: Builds devnet and bots container without local ports open
+- `env.bots`: Builds standalone bots connecting to existing devnet
 
 For example
 ```
