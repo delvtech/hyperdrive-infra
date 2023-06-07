@@ -5,12 +5,13 @@ services:
     # 2022-05-31 afer "generalized bot settings working with FixedPoint" (#484)
     # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2ef72dd9879511d639695b83b35fb2463b6b2ca6
     # local elf-sims pointing to IHyperdrive
-    # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2eebd2991ceaab5db0b3f2703fcb667412508c25
-    image: elf-sims:latest
+    # image: elf-sims:${ELFPY_TAG}
+    image: ghcr.io/delvtech/elf-simulations/elf-sims:${ELFPY_TAG}
     working_dir: /app/
     environment:
+      - BOT_ALCHEMY=false
+      - BOT_ARTIFACTS_URL=http://artifacts:80
       - BOT_DEVNET=true
-      - BOT_RPC_URL=http://ethereum:8545
       - BOT_LOG_FILENAME=testnet_bots
       - BOT_LOG_LEVEL=INFO
       # TODO get default value for this
@@ -19,8 +20,7 @@ services:
       - BOT_NUM_FRIDA=0
       - BOT_NUM_RANDOM=4
       - BOT_TRADE_CHANCE=0.1
-      - BOT_ALCHEMY=false
-      - BOT_ARTIFACTS_URL=http://artifacts:80
+      - BOT_RPC_URL=http://ethereum:8545
   
     command: "/bin/sh -c 'python examples/evm_bots.py'"
 
