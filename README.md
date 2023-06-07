@@ -29,16 +29,14 @@ Paste your personal access token in the `Password:` field that pops up.
 
 ## Setting up environment
 
-Pick an environment file in `env/` and copy to `.env`
-- `env.devnet`: Builds standalone devnet without local ports open
-- `env.debug`: Builds standalone devnet with local ports open
-- `env.all`: Builds devnet and bots container without local ports open
-- `env.bots`: Builds standalone bots connecting to existing devnet
+We use environment files in `env/` to choose which containers to build together.
 
-For example
-```
-$ cp env/env.all .env
-```
+To select an environment, run one of the following scripts from the project root.
+`sh scripts/setup_env_all.sh` : Builds **devnet** and **bots** without local ports open
+`sh scripts/setup_env_devnet.sh` : Builds **devnet** without local ports open
+`sh scripts/setup_env_bots.sh` : Builds **bots** for connecting to existing devnet (requires local ports to be open)
+`sh scripts/setup_env_debug.sh` : Builds **devnet** with local ports open
+`sh scripts/setup_env_debug_bots.sh` : Builds **devnet** and **bots** with local ports open
 
 ## Pulling the images
 
