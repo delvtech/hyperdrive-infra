@@ -29,14 +29,22 @@ Paste your personal access token in the `Password:` field that pops up.
 
 ## Setting up environment
 
-We use environment files in `env/` to choose which containers to build together.
+We use an environment file, `.env`, to choose which containers to build together.
+To select an environment, run `sh setup_env.sh` with one or more of the following flags:
 
-To select an environment, run one of the following scripts from the project root.
-`sh scripts/setup_env_all.sh` : Builds **devnet** and **bots** without local ports open
-`sh scripts/setup_env_devnet.sh` : Builds **devnet** without local ports open
-`sh scripts/setup_env_bots.sh` : Builds **bots** for connecting to existing devnet (requires local ports to be open)
-`sh scripts/setup_env_debug.sh` : Builds **devnet** with local ports open
-`sh scripts/setup_env_debug_bots.sh` : Builds **devnet** and **bots** with local ports open
+`--devnet` : Build the devnet container.
+
+`--bots` : Build the bot container.
+
+`--ports` : Open up local ports in services the devnet container, as specified in `env/env.ports`.
+
+We also support shortcuts for common combinations. Only one of these should be used at a time:
+
+`--all` : Enable devnet, ports, bots
+
+`--develop` : Enable devnet, ports
+
+You can also change the tags in `env/env.tags` to modify which docker image you build from.
 
 ## Pulling the images
 
