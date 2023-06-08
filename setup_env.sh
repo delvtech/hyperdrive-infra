@@ -103,3 +103,5 @@ cat env/env.tags >> .env
 if $PORTS; then
     cat env/env.ports >> .env
 fi
+
+echo "Environment filed created at .env"
