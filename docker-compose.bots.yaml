@@ -10,6 +10,7 @@ services:
     working_dir: /app/
     environment:
       - BOT_ALCHEMY=false
+      - HALT_ON_ERRORS=false
       - BOT_ARTIFACTS_URL=http://artifacts:80
       - BOT_DEVNET=true
       - BOT_LOG_FILENAME=testnet_bots
@@ -21,7 +22,7 @@ services:
       - BOT_NUM_RANDOM=4
       - BOT_TRADE_CHANCE=0.1
       - BOT_RPC_URL=http://ethereum:8545
-  
+
     command: "/bin/sh -c 'python examples/evm_bots.py'"
 
 volumes:
