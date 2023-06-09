@@ -41,7 +41,7 @@ To select an environment, run `sh setup_env.sh` with one or more of the followin
 
 `--ports` : Open up local ports in services the devnet container, as specified in `env/env.ports`.
 
-We also support shortcuts for common combinations. Only one of these should be used at a time:
+We also support shortcuts for common combinations. The most inclusive tag used will take priority.
 
 `--all` : Enable devnet, ports, bots, frontend
 
