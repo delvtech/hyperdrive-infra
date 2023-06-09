@@ -60,32 +60,47 @@ rm -f .env
 touch .env
 echo "# Environment for Docker compose" >> .env
 
-# Fill the .env file with the ENV variables in order
+# Set up the COMPOSE_FILE environment variable. To ensure that we don't
+# experience issues with missing "image" or "build" fields, we always include
+# all of the services in the compose context. We determine which layers are
+# turned on using docker compose profiles.
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 ports_compose="docker-compose.ports.yaml"
+full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:"
+if $PORTS; then
+    full_compose_files+="$ports_compose:"
+fi
 
-full_compose="COMPOSE_FILE="
-if $DEVNET; then
-    full_compose+="$devnet_compose:"
+# Check if ":" is at the end of the string
+if [[ $full_compose_files == *":" ]]; then
+    # Remove ":" from the end of the string
+    full_compose_files=${full_compose_files%:}
+fi
+
+# Append the COMPOSE_FILE environment variable to the .env file
+echo $full_compose_files >> .env
+
+# Set up the COMPOSE_PROFILES environment variable. This toggles which layers
+# should be started.
+bot_profile="bots"
+frontend_profile="frontend"
+full_compose_profiles="COMPOSE_PROFILES="
+if $FRONTEND; then
+    full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
-    full_compose+="$bot_compose:"
+    full_compose_profiles+="$bot_profile,"
 fi
-if $FRONTEND; then
-    full_compose+="$frontend_compose:"
-fi
-if $PORTS; then
-    full_compose+="$ports_compose:"
-fi
-# Check if ":" is at the end of the string
-if [[ $full_compose == *":" ]]; then
-    # Remove ":" from the end of the string
-    full_compose=${full_compose%:}
+# Check if "," is at the end of the string
+if [[ $full_compose_profiles == *"," ]]; then
+    # Remove "," from the end of the string
+    full_compose_profiles=${full_compose_profiles%,}
 fi
 
-echo $full_compose >> .env
+# Append the COMPOSE_PROFILES environment variable to the .env file
+echo $full_compose_profiles >> .env
 
 # cat env.tags to the .env file
 cat env/env.tags >> .env
