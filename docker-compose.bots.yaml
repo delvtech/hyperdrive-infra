@@ -7,6 +7,8 @@ services:
     # local elf-sims pointing to IHyperdrive
     # image: elf-sims:${ELFPY_TAG}
     image: ghcr.io/delvtech/elf-simulations/elf-sims:${ELFPY_TAG}
+    profiles:
+      - "bots"
     working_dir: /app/
     environment:
       - BOT_ALCHEMY=false

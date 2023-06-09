@@ -3,6 +3,8 @@ services:
 
   hyperdrive-monorepo:
     image: ghcr.io/delvtech/hyperdrive-monorepo/hyperdrive-monorepo:${HYPERDRIVE_MONOREPO_TAG}
+    profiles:
+      - "frontend"
     environment:
       - VITE_ALCHEMY_GOERLI_RPC_KEY=${ALCHEMY_GOERLI_API_KEY}
       - VITE_LOCALHOST_NODE_RPC_URL=http://localhost:8545
