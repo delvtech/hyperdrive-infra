@@ -22,11 +22,6 @@ BOTS=false
 PORTS=false
 FRONTEND=false
 
-## New variables
-ALL_FLAG=false
-DEVELOP_FLAG=false
-FLAGS_COUNT=0
-
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -35,31 +30,22 @@ while [[ $# -gt 0 ]]; do
             BOTS=true
             FRONTEND=true
             PORTS=true
-            ALL_FLAG=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --develop)
             DEVNET=true
-            BOTS=false
             PORTS=true
-            DEVELOP_FLAG=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --devnet)
             DEVNET=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --bots)
             BOTS=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --frontend)
             FRONTEND=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --ports)
             PORTS=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         *)
             echo "Unknown flag: $1"
@@ -67,12 +53,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# Throw an error if `--all` or `--develop` is not specified by itself
-if { $ALL_FLAG || $DEVELOP_FLAG; } && [ $FLAGS_COUNT -gt 1 ]; then
-    echo "Error: --all or --develop must be specified by itself."
-    exit 1
-fi
 
 # Make a new .env file
 rm -f .env
