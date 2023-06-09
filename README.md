@@ -43,9 +43,9 @@ To select an environment, run `sh setup_env.sh` with one or more of the followin
 
 We also support shortcuts for common combinations. Only one of these should be used at a time:
 
-`--all` : Enable devnet, ports, bots
+`--all` : Enable devnet, ports, bots, frontend
 
-`--develop` : Enable devnet, ports, frontend
+`--develop` : Enable devnet, ports
 
 You can also change the tags in `env/env.tags` to modify which docker image you build from.
 
