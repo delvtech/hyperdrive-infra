@@ -7,11 +7,12 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
-    echo "  --all     : Enable all components"
-    echo "  --develop : Enable development components"
-    echo "  --devnet  : Enable devnet component"
-    echo "  --bots    : Enable bots component"
-    echo "  --ports   : Enable ports component"
+    echo "  --all      : Enable all components"
+    echo "  --develop  : Enable development components"
+    echo "  --devnet   : Enable devnet component"
+    echo "  --bots     : Enable bots component"
+    echo "  --frontend : Enable frontend component"
+    echo "  --ports    : Enable ports component"
     exit 0
 fi
 
@@ -20,11 +21,7 @@ fi
 DEVNET=false
 BOTS=false
 PORTS=false
-
-## New variables
-ALL_FLAG=false
-DEVELOP_FLAG=false
-FLAGS_COUNT=0
+FRONTEND=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
@@ -32,28 +29,24 @@ while [[ $# -gt 0 ]]; do
         --all)
             DEVNET=true
             BOTS=true
+            FRONTEND=true
             PORTS=true
-            ALL_FLAG=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --develop)
             DEVNET=true
-            BOTS=false
             PORTS=true
-            DEVELOP_FLAG=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --devnet)
             DEVNET=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --bots)
             BOTS=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
+            ;;
+        --frontend)
+            FRONTEND=true
             ;;
         --ports)
             PORTS=true
-            FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         *)
             echo "Unknown flag: $1"
@@ -61,12 +54,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# Throw an error if `--all` or `--develop` is not specified by itself
-if { $ALL_FLAG || $DEVELOP_FLAG; } && [ $FLAGS_COUNT -gt 1 ]; then
-    echo "Error: --all or --develop must be specified by itself."
-    exit 1
-fi
 
 # Make a new .env file
 rm -f .env
@@ -76,6 +63,7 @@ echo "# Environment for Docker compose" >> .env
 # Fill the .env file with the ENV variables in order
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
+frontend_compose="docker-compose.frontend.yaml"
 ports_compose="docker-compose.ports.yaml"
 
 full_compose="COMPOSE_FILE="
@@ -84,6 +72,9 @@ if $DEVNET; then
 fi
 if $BOTS; then
     full_compose+="$bot_compose:"
+fi
+if $frontend; then
+    full_compose+="$frontend_compose:"
 fi
 if $PORTS; then
     full_compose+="$ports_compose:"
@@ -102,6 +93,11 @@ cat env/env.tags >> .env
 # optionally cat env.ports to .env file if --ports
 if $PORTS; then
     cat env/env.ports >> .env
+fi
+
+# optionally add an env.frontend to .env file if --frontend
+if $FRONTEND; then
+    cat env/env.frontend >> .env
 fi
 
 echo "Environment filed created at .env"

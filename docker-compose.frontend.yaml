@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+
+  hyperdrive-monorepo:
+    image: ghcr.io/delvtech/hyperdrive-monorepo/hyperdrive-monorepo:${HYPERDRIVE_MONOREPO_TAG}
+    environment:
+      - VITE_ALCHEMY_GOERLI_RPC_KEY=${ALCHEMY_GOERLI_API_KEY}
+      - VITE_LOCALHOST_NODE_RPC_URL=http://localhost:8545
+      - VITE_LOCALHOST_ADDRESSES_URL=http://localhost:80
+    command: "yarn workspace hyperdrive-trading dev --host 0.0.0.0"
