@@ -20,6 +20,7 @@ fi
 DEVNET=false
 BOTS=false
 PORTS=false
+FRONTEND=false
 
 ## New variables
 ALL_FLAG=false
@@ -32,6 +33,7 @@ while [[ $# -gt 0 ]]; do
         --all)
             DEVNET=true
             BOTS=true
+            FRONTEND=true
             PORTS=true
             ALL_FLAG=true
             FLAGS_COUNT=$((FLAGS_COUNT+1))
@@ -49,6 +51,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --bots)
             BOTS=true
+            FLAGS_COUNT=$((FLAGS_COUNT+1))
+            ;;
+        --frontend)
+            FRONTEND=true
             FLAGS_COUNT=$((FLAGS_COUNT+1))
             ;;
         --ports)
@@ -76,6 +82,7 @@ echo "# Environment for Docker compose" >> .env
 # Fill the .env file with the ENV variables in order
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
+frontend_compose="docker-compose.frontend.yaml"
 ports_compose="docker-compose.ports.yaml"
 
 full_compose="COMPOSE_FILE="
@@ -84,6 +91,9 @@ if $DEVNET; then
 fi
 if $BOTS; then
     full_compose+="$bot_compose:"
+fi
+if $frontend; then
+    full_compose+="$frontend_compose:"
 fi
 if $PORTS; then
     full_compose+="$ports_compose:"
@@ -102,6 +112,11 @@ cat env/env.tags >> .env
 # optionally cat env.ports to .env file if --ports
 if $PORTS; then
     cat env/env.ports >> .env
+fi
+
+# optionally add an env.ports to .env file if --ports
+if $FRONTEND; then
+    cat env/env.frontend >> .env
 fi
 
 echo "Environment filed created at .env"
