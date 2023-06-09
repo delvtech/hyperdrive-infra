@@ -73,7 +73,7 @@ fi
 if $BOTS; then
     full_compose+="$bot_compose:"
 fi
-if $frontend; then
+if $FRONTEND; then
     full_compose+="$frontend_compose:"
 fi
 if $PORTS; then
