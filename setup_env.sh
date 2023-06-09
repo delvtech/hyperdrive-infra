@@ -7,11 +7,12 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
-    echo "  --all     : Enable all components"
-    echo "  --develop : Enable development components"
-    echo "  --devnet  : Enable devnet component"
-    echo "  --bots    : Enable bots component"
-    echo "  --ports   : Enable ports component"
+    echo "  --all      : Enable all components"
+    echo "  --develop  : Enable development components"
+    echo "  --devnet   : Enable devnet component"
+    echo "  --bots     : Enable bots component"
+    echo "  --frontend : Enable frontend component"
+    echo "  --ports    : Enable ports component"
     exit 0
 fi
 
@@ -94,7 +95,7 @@ if $PORTS; then
     cat env/env.ports >> .env
 fi
 
-# optionally add an env.ports to .env file if --ports
+# optionally add an env.frontend to .env file if --frontend
 if $FRONTEND; then
     cat env/env.frontend >> .env
 fi
