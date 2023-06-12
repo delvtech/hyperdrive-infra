@@ -13,7 +13,7 @@ services:
     environment:
       - BOT_ALCHEMY=false
       - HALT_ON_ERRORS=false
-      - BOT_ARTIFACTS_URL=http://artifacts:80
+      - BOT_ARTIFACTS_URL=http://artifacts:${ARTIFACT_PORT}
       - BOT_DEVNET=true
       - BOT_LOG_FILENAME=testnet_bots
       - BOT_LOG_LEVEL=INFO
@@ -23,7 +23,7 @@ services:
       - BOT_NUM_FRIDA=0
       - BOT_NUM_RANDOM=4
       - BOT_TRADE_CHANCE=0.1
-      - BOT_RPC_URL=http://ethereum:8545
+      - BOT_RPC_URL=http://ethereum:${ETH_PORT}
 
     command: "/bin/sh -c 'python examples/evm_bots.py'"
 
