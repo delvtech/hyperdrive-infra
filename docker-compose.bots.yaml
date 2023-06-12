@@ -13,7 +13,7 @@ services:
     environment:
       - BOT_ALCHEMY=false
       - HALT_ON_ERRORS=false
-      - BOT_ARTIFACTS_URL=http://artifacts:${ARTIFACT_PORT}
+      - BOT_ARTIFACTS_URL=http://artifacts:80
       - BOT_DEVNET=true
       - BOT_LOG_FILENAME=testnet_bots
       - BOT_LOG_LEVEL=INFO
