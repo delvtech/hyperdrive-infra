@@ -7,7 +7,7 @@ services:
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
     command: |
-      'anvil --host 0.0.0.0'
+      'anvil --host 0.0.0.0 --port ${ETH_PORT}'
 
   migrations:
     image: ghcr.io/delvtech/hyperdrive/migrations:${HYPERDRIVE_TAG}
