@@ -72,6 +72,13 @@ full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
+if $DEVNET; then  # ensure folder exists to map contracts to
+    # if folder doesn't exist make it and echo that
+    if [ ! -d ~/hyperdrive_solidity ]; then
+        mkdir ~/hyperdrive_solidity
+        echo "Created ~/hyperdrive_solidity"
+    fi
+fi
 
 # Check if ":" is at the end of the string
 if [[ $full_compose_files == *":" ]]; then

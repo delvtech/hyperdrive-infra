@@ -17,6 +17,8 @@ services:
       - RPC_URL=http://ethereum:8545
     volumes:
       - artifacts:/src/artifacts/
+      - ~/hyperdrive_solidity:/src/  # local mount for development
+
     # TODO: This is a band-aid solution for the memory leaks experienced on
     # Apple Silicon. Remove the restart policy when this reliably starts.
     restart: on-failure:5
