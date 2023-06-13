@@ -25,7 +25,7 @@ services:
       - BOT_TRADE_CHANCE=0.1
       - BOT_RPC_URL=http://ethereum:8545
 
-    command: "/bin/sh -c 'python examples/evm_bots.py'"
+    command: "/bin/sh -c 'python elfpy/bots/bots_server.py examples/evm_bots.py'"
 
 volumes:
   artifacts:
