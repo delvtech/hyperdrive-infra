@@ -22,6 +22,7 @@ DEVNET=false
 BOTS=false
 PORTS=false
 FRONTEND=false
+POSTGRES=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
@@ -30,11 +31,13 @@ while [[ $# -gt 0 ]]; do
             DEVNET=true
             BOTS=true
             FRONTEND=true
+            POSTGRES=true
             PORTS=true
             ;;
         --develop)
             DEVNET=true
             BOTS=true
+            POSTGRES=true
             PORTS=true
             ;;
         --devnet)
@@ -68,8 +71,9 @@ echo "# Environment for Docker compose" >> .env
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
 frontend_compose="docker-compose.frontend.yaml"
+postgres_compose="docker-compose.postgres.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:"
+full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:$postgres_compose:"
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
@@ -114,6 +118,11 @@ fi
 # optionally add an env.frontend to .env file if --frontend
 if $FRONTEND; then
     cat env/env.frontend >> .env
+fi
+
+# optionally add an env.frontend to .env file if --frontend
+if $POSTGRES; then
+    cat env/env.postgres >> .env
 fi
 
 echo "Environment filed created at .env"
