@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+
+  botserver:
+    # 2022-05-31 afer "generalized bot settings working with FixedPoint" (#484)
+    # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2ef72dd9879511d639695b83b35fb2463b6b2ca6
+    # local elf-sims pointing to IHyperdrive
+    # image: elf-sims:${ELFPY_TAG}
+    image: elf-sims:latest
+    profiles:
+      - "botserver"
+    working_dir: /app/
+    command: /bin/sh -c "python elfpy/bots/bot_server.py examples/evm_bots.py"
+    deploy:
+      resources:
+          limits:
+            cpus: "0"
+            memory: "0"
+
+volumes:
+  artifacts:

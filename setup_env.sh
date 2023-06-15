@@ -42,6 +42,9 @@ while [[ $# -gt 0 ]]; do
         --bots)
             BOTS=true
             ;;
+        --botserver)
+            BOTSERVER=true
+            ;;
         --frontend)
             FRONTEND=true
             ;;
@@ -66,9 +69,10 @@ echo "# Environment for Docker compose" >> .env
 # turned on using docker compose profiles.
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
+botserver_compose="docker-compose.bot-server.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:"
+full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$botserver_compose:$frontend_compose:"
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
@@ -84,14 +88,16 @@ echo $full_compose_files >> .env
 
 # Set up the COMPOSE_PROFILES environment variable. This toggles which layers
 # should be started.
-bot_profile="bots"
 frontend_profile="frontend"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
-    full_compose_profiles+="$bot_profile,"
+    full_compose_profiles+="bots"
+fi
+if $BOTSERVER; then
+    full_compose_profiles+="botserver"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then

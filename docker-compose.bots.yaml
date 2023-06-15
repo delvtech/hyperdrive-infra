@@ -6,26 +6,22 @@ services:
     # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2ef72dd9879511d639695b83b35fb2463b6b2ca6
     # local elf-sims pointing to IHyperdrive
     # image: elf-sims:${ELFPY_TAG}
-    image: ghcr.io/delvtech/elf-simulations/elf-sims:${ELFPY_TAG}
+    image: elf-sims:latest
     profiles:
       - "bots"
     working_dir: /app/
-    environment:
-      - BOT_ALCHEMY=false
-      - HALT_ON_ERRORS=false
-      - BOT_ARTIFACTS_URL=http://artifacts:80
-      - BOT_DEVNET=true
-      - BOT_LOG_FILENAME=testnet_bots
-      - BOT_LOG_LEVEL=INFO
-      # TODO get default value for this
-      - BOT_MAX_BYTES=100
-      - BOT_NUM_LOUIE=0
-      - BOT_NUM_FRIDA=0
-      - BOT_NUM_RANDOM=4
-      - BOT_TRADE_CHANCE=0.1
-      - BOT_RPC_URL=http://ethereum:8545
-
-    command: "/bin/sh -c 'python elfpy/bots/bots_server.py examples/evm_bots.py'"
+    command: |
+      /bin/sh -c "
+        echo 'Starting bot...' &&
+        python -c 'from elfpy.bots import BotConfig; config = BotConfig(); config.artifacts_url = \"http://artifacts:80\"; config.rpc_url = \"http://ethereum:8545\"; config.save_as_json(\"my_config.json\")' &&
+        cat my_config.json &&
+        curl --verbose --include -H \"Content-Type: application/json\" -d @my_config.json http://botserver:5000/run_script
+      "
+    volumes:
+      - artifacts:/app/artifacts
+    depends_on:
+      - botserver
+      - artifacts
 
 volumes:
   artifacts:

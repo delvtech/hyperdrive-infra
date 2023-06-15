@@ -13,3 +13,6 @@ services:
     ports:
       - ${UI_PORT}:5173
 
+  botserver:
+    ports:
+      - ${BOTSERVER_PORT}:5000
