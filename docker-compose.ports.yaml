@@ -15,4 +15,4 @@ services:
 
   botserver:
     ports:
-      - ${BOTSERVER_PORT}:5000
+      - ${BOTSERVER_PORT}:5001
