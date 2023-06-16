@@ -7,12 +7,13 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
-    echo "  --all      : Enable all components"
-    echo "  --develop  : Enable development components"
-    echo "  --devnet   : Enable devnet component"
-    echo "  --bots     : Enable bots component"
-    echo "  --frontend : Enable frontend component"
-    echo "  --ports    : Enable ports component"
+    echo "  --devnet    : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
+    echo "  --botserver : Runs the bot framework, receiving bot configs from a web interface."
+    echo "  --bots      : Submit a specific bot config to the bot server."
+    echo "  --frontend  : Build the frontend container."
+    echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
+    echo "  --all       : Enable all components: devnet, bot server, bots, frontend, and ports."
+    echo "  --develop   : Enable devnet and ports only. Suitable for local development work."
     exit 0
 fi
 
@@ -20,6 +21,7 @@ fi
 ## Initialize variables
 DEVNET=false
 BOTS=false
+BOTSERVER=false
 PORTS=false
 FRONTEND=false
 
@@ -94,10 +96,10 @@ if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
-    full_compose_profiles+="bots"
+    full_compose_profiles+="bots,"
 fi
 if $BOTSERVER; then
-    full_compose_profiles+="botserver"
+    full_compose_profiles+="botserver,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
