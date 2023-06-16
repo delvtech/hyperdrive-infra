@@ -13,9 +13,9 @@ services:
     command: |
       /bin/sh -c "
         echo 'Starting bot...' &&
-        python -c 'from elfpy.bots import BotConfig; config = BotConfig(); config.artifacts_url = \"http://artifacts:80\"; config.rpc_url = \"http://ethereum:8545\"; config.save_as_json(\"my_config.json\")' &&
-        cat my_config.json &&
-        curl --verbose --include -H \"Content-Type: application/json\" -d @my_config.json http://botserver:5000/run_script
+        python -c 'from elfpy.bots import BotConfig; config = BotConfig(); config.artifacts_url = \"http://artifacts:80\"; config.rpc_url = \"http://ethereum:8545\"; config.log_filename=\"docker-bot\"; config.log_file_and_stdout=True; config.save_as_json(\"docker-config.json\")' &&
+        cat docker-config.json &&
+        curl --verbose --include -H \"Content-Type: application/json\" -d @docker-config.json http://botserver:5000/run_script
       "
     volumes:
       - artifacts:/app/artifacts
