@@ -2,11 +2,7 @@ version: "3.9"
 services:
 
   bot:
-    # 2022-05-31 afer "generalized bot settings working with FixedPoint" (#484)
-    # image: ghcr.io/delvtech/elf-simulations/elf-sims:nightly-2ef72dd9879511d639695b83b35fb2463b6b2ca6
-    # local elf-sims pointing to IHyperdrive
-    # image: elf-sims:${ELFPY_TAG}
-    image: elf-sims:latest
+    image: ghcr.io/delvtech/elf-simulations/elf-sims:{ELFPY_TAG}
     profiles:
       - "bots"
     working_dir: /app/
