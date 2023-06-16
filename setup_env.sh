@@ -91,15 +91,17 @@ echo $full_compose_files >> .env
 # Set up the COMPOSE_PROFILES environment variable. This toggles which layers
 # should be started.
 frontend_profile="frontend"
+bots_profile="bots"
+botserver_profile="botserver"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
-    full_compose_profiles+="bots,"
+    full_compose_profiles+="$bots_profile,"
 fi
 if $BOTSERVER; then
-    full_compose_profiles+="botserver,"
+    full_compose_profiles+="$botserver_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then

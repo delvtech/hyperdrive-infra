@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   botserver:
-    image: ghcr.io/delvtech/elf-simulations/elf-sims:{ELFPY_TAG}
+    image: ghcr.io/delvtech/elf-simulations/elf-sims:${ELFPY_TAG}
     profiles:
       - "botserver"
     working_dir: /app/
