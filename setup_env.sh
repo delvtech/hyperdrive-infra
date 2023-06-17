@@ -7,12 +7,12 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
-    echo "  --all      : Enable all components"
-    echo "  --develop  : Enable development components"
-    echo "  --devnet   : Enable devnet component"
-    echo "  --bots     : Enable bots component"
-    echo "  --frontend : Enable frontend component"
-    echo "  --ports    : Enable ports component"
+    echo "  --devnet    : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
+    echo "  --bots      : Runs the bot framework, receiving bot configs from a web interface."
+    echo "  --frontend  : Build the frontend container."
+    echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
+    echo "  --all       : Enable all components: devnet, bots, frontend, and ports."
+    echo "  --develop   : Enable devnet, bots and ports. Suitable for local development work."
     exit 0
 fi
 
@@ -34,6 +34,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --develop)
             DEVNET=true
+            BOTS=true
             PORTS=true
             ;;
         --devnet)
@@ -84,14 +85,14 @@ echo $full_compose_files >> .env
 
 # Set up the COMPOSE_PROFILES environment variable. This toggles which layers
 # should be started.
-bot_profile="bots"
 frontend_profile="frontend"
+bots_profile="bots"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
-    full_compose_profiles+="$bot_profile,"
+    full_compose_profiles+="$bots_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
