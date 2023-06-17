@@ -9,7 +9,6 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Flags:"
     echo "  --devnet    : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
     echo "  --botserver : Runs the bot framework, receiving bot configs from a web interface."
-    echo "  --bots      : Submit a specific bot config to the bot server."
     echo "  --frontend  : Build the frontend container."
     echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --all       : Enable all components: devnet, bot server, bots, frontend, and ports."
@@ -20,7 +19,6 @@ fi
 # Parse all of the arguments
 ## Initialize variables
 DEVNET=false
-BOTS=false
 BOTSERVER=false
 PORTS=false
 FRONTEND=false
@@ -43,9 +41,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --bots)
             BOTS=true
-            ;;
-        --botserver)
-            BOTSERVER=true
             ;;
         --frontend)
             FRONTEND=true
@@ -71,10 +66,9 @@ echo "# Environment for Docker compose" >> .env
 # turned on using docker compose profiles.
 devnet_compose="docker-compose.devnet.yaml"
 bot_compose="docker-compose.bots.yaml"
-botserver_compose="docker-compose.bot-server.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$botserver_compose:$frontend_compose:"
+full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:"
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
@@ -92,16 +86,12 @@ echo $full_compose_files >> .env
 # should be started.
 frontend_profile="frontend"
 bots_profile="bots"
-botserver_profile="botserver"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
     full_compose_profiles+="$bots_profile,"
-fi
-if $BOTSERVER; then
-    full_compose_profiles+="$botserver_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then

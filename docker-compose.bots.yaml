@@ -6,18 +6,12 @@ services:
     profiles:
       - "bots"
     working_dir: /app/
-    command: |
-      /bin/sh -c "
-        echo 'Starting bot...' &&
-        python -c 'from elfpy.bots import BotConfig; config = BotConfig(); config.artifacts_url = \"http://artifacts:80\"; config.rpc_url = \"http://ethereum:8545\"; config.log_filename=\"docker-bot\"; config.log_file_and_stdout=True; config.save_as_json(\"docker-config.json\")' &&
-        cat docker-config.json &&
-        curl --verbose --include -H \"Content-Type: application/json\" -d @docker-config.json http://botserver:5001/run_script
-      "
-    volumes:
-      - artifacts:/app/artifacts
-    depends_on:
-      - botserver
-      - artifacts
+    command: /bin/sh -c "python elfpy/bots/bot_server.py examples/evm_bots.py"
+    deploy:
+      resources:
+          limits:
+            cpus: "0"
+            memory: "0"
 
 volumes:
   artifacts:
