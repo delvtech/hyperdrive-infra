@@ -31,15 +31,14 @@ We use an environment file, `.env`, to choose which containers to build together
 To select an environment, run `sh setup_env.sh` with one or more of the following flags:
 
 - `--devnet` : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server.
-- `--botserver` : Runs the bot framework, receiving bot configs from a web interface.
-- `--bots` : Submit a specific bot config to the bot server.
+- `--bots` : Runs the bot framework, receiving bot configs from a web interface.
 - `--frontend` : Build the frontend container.
 - `--ports` : Expose docker images to your machine, as specified in `env/env.ports`.
 
 We also support shortcuts for common combinations. The most inclusive tag used will take priority.
 
-- `--all` : Enable devnet, bot server, bots, frontend, and ports.
-- `--develop` : Enable devnet and ports only. Suitable for local development work.
+- `--all` : Enable all components: devnet, bots, frontend, and ports.
+- `--develop` : Enable devnet, bots, and ports. Suitable for local development work.
 
 You can also change the tags in `env/env.tags` to modify which docker image you build from.
 

@@ -12,7 +12,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --frontend  : Build the frontend container."
     echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --all       : Enable all components: devnet, bots, frontend, and ports."
-    echo "  --develop   : Enable devnet, bots and ports only. Suitable for local development work."
+    echo "  --develop   : Enable devnet, bots and ports. Suitable for local development work."
     exit 0
 fi
 
