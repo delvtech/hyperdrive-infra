@@ -8,18 +8,18 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
     echo "  --devnet    : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
-    echo "  --botserver : Runs the bot framework, receiving bot configs from a web interface."
+    echo "  --bots      : Runs the bot framework, receiving bot configs from a web interface."
     echo "  --frontend  : Build the frontend container."
     echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
-    echo "  --all       : Enable all components: devnet, bot server, bots, frontend, and ports."
-    echo "  --develop   : Enable devnet and ports only. Suitable for local development work."
+    echo "  --all       : Enable all components: devnet, bots, frontend, and ports."
+    echo "  --develop   : Enable devnet, bots and ports only. Suitable for local development work."
     exit 0
 fi
 
 # Parse all of the arguments
 ## Initialize variables
 DEVNET=false
-BOTSERVER=false
+BOTS=false
 PORTS=false
 FRONTEND=false
 
@@ -34,6 +34,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --develop)
             DEVNET=true
+            BOTS=true
             PORTS=true
             ;;
         --devnet)

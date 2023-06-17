@@ -1,7 +1,7 @@
 version: "3.9"
 services:
 
-  bot:
+  bots:
     image: ghcr.io/delvtech/elf-simulations/elf-sims:${ELFPY_TAG}
     profiles:
       - "bots"
