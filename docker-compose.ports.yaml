@@ -16,3 +16,7 @@ services:
   bots:
     ports:
       - ${BOTSERVER_PORT}:5001
+
+  db:
+    ports:
+      - ${DB_PORT}:5432
