@@ -2,24 +2,14 @@ version: "3.9"
 services:
 
   ethereum:
-    image: ghcr.io/foundry-rs/foundry
+    image: ghcr.io/delvtech/hyperdrive/devnet:${HYPERDRIVE_TAG}
     # without --block-time we're in "automine" mode and blocks are mined
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
     command: |
-      'anvil --host 0.0.0.0'
-
-  migrations:
-    image: ghcr.io/delvtech/hyperdrive/migrations:${HYPERDRIVE_TAG}
-    environment:
-      - ETH_FROM=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-      - PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-      - RPC_URL=http://ethereum:8545
+      'anvil --load-state ./data --host 0.0.0.0 '
     volumes:
       - artifacts:/src/artifacts/
-    # TODO: This is a band-aid solution for the memory leaks experienced on
-    # Apple Silicon. Remove the restart policy when this reliably starts.
-    restart: on-failure:5
 
   artifacts:
     image: ghcr.io/delvtech/infra/artifacts:${ARTIFACTS_TAG}
