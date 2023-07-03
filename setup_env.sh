@@ -112,11 +112,13 @@ cat env/env.tags >> .env
 
 # optionally cat env.ports to .env file if --ports
 if $PORTS; then
+    echo $'\n' >> .env
     cat env/env.ports >> .env
 fi
 
 # optionally add an env.frontend to .env file if --frontend
 if $FRONTEND; then
+    echo $'\n' >> .env
     cat env/env.frontend >> .env
 fi
 
