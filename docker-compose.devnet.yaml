@@ -1,6 +1,6 @@
 version: "3.9"
-
 services:
+
   ethereum:
     image: ghcr.io/delvtech/hyperdrive/devnet:${HYPERDRIVE_TAG}
     # without --block-time we're in "automine" mode and blocks are mined
