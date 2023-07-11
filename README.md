@@ -16,8 +16,8 @@ The docker compose app makes use of several images that are hosted on a private 
 these images, you will need to [create a Github personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
 
 > If you're using linux and [Docker Desktop](https://docs.docker.com/desktop/)
-> (which is [recommended for maximum compatibility](https://docs.docker.com/desktop/faqs/linuxfaqs/#why-does-docker-desktop-for-linux-run-a-vm)) by
-> [configuring](https://docs.docker.com/desktop/get-started/#credentials-management-for-linux-users) your [`pass`](https://wiki.archlinux.org/title/Pass)-based credential store
+> (which is [recommended for maximum compatibility](https://docs.docker.com/desktop/faqs/linuxfaqs/#why-does-docker-desktop-for-linux-run-a-vm))
+> [configure](https://docs.docker.com/desktop/get-started/#credentials-management-for-linux-users) your [`pass`](https://wiki.archlinux.org/title/Pass)-based credential store
 > (if you want a GPG key without a password, run `gpg --batch --passphrase '' --quick-gen-key your@email.com default default`).
 
 The only permissions you need are assigned once you enable `read:packages`.
