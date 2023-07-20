@@ -91,12 +91,16 @@ echo $full_compose_files >> .env
 # should be started.
 frontend_profile="frontend"
 bots_profile="bots"
+postgres_profile="postgres"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
 fi
 if $BOTS; then
     full_compose_profiles+="$bots_profile,"
+fi
+if $POSTGRES; then
+    full_compose_profiles+="$postgres_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then

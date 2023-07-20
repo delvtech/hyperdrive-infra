@@ -4,6 +4,8 @@ services:
 
   db:
     image: postgres
+    profiles:
+      - "postgres"
     restart: always
     environment:
       POSTGRES_PASSWORD: password
