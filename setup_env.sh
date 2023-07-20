@@ -73,7 +73,12 @@ bot_compose="docker-compose.bots.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:$postgres_compose:"
+full_compose_files="COMPOSE_FILE=$devnet_compose:$bot_compose:$frontend_compose:"
+
+if $POSTGRES; then
+    full_compose_files+="$postgres_compose:"
+fi
+
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
