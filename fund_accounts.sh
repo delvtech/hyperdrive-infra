@@ -14,7 +14,7 @@ echo "        FUNDING ACCOUNTS        "
 echo "--------------------------------"
 
 # Load list of accounts to fund from /accounts/balances.json
-accounts_and_balances=$(jq -r 'to_entries|map("\(.key) \(.value.eth)  \(.value.tokens)")|.[]' /accounts/balances.json)
+accounts_and_balances=$(jq -r 'to_entries|map("\(.key) \(.value.eth) \(.value.tokens)")|.[]' /accounts/balances.json)
 
 # Get the base token address from /artifact/addresses.json
 base_token=$(jq -r '.baseToken' /artifacts/addresses.json)
