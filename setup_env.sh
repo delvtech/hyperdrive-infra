@@ -36,7 +36,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --develop)
             DEVNET=true
-            BOTS=true
             POSTGRES=true
             PORTS=true
             ;;
@@ -45,6 +44,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --bots)
             BOTS=true
+            ;;
+        --postgres)
+            POSTGRES=true
             ;;
         --frontend)
             FRONTEND=true
