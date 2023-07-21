@@ -37,14 +37,16 @@ We use an environment file, `.env`, to choose which containers to build together
 To select an environment, run `sh setup_env.sh` with one or more of the following flags:
 
 - `--devnet` : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server.
-- `--bots` : Runs the bot framework, receiving bot configs from a web interface.
+- `--data` : Runs the data framework, querying the chain and writing to postgres.
 - `--frontend` : Build the frontend container.
 - `--ports` : Expose docker images to your machine, as specified in `env/env.ports`.
+- `--fund-accounts` : Fund accounts from `/accounts/balances.json`.
 
 We also support shortcuts for common combinations. The most inclusive tag used will take priority.
 
-- `--all` : Enable all components: devnet, bots, frontend, and ports.
-- `--develop` : Enable devnet, bots, and ports. Suitable for local development work.
+- `--all` : Fund accounts and enable all components: devnet, bots, frontend, and ports.
+- `--develop` : Fund accounts and enable devnet, bots and ports. Suitable for local development work.
+- `--ec2` : Fund accounts and enable devnet, data, and ports. Need configuration to external postgres.
 
 You can also change the tags in `env/env.tags` to modify which docker image you build from.
 
