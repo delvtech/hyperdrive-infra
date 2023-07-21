@@ -25,7 +25,7 @@ echo "$accounts_and_balances" | while read account eth_balance token_balance; do
   eth_balance_hex="0x$(echo "obase=16; scale=0; $eth_balance * 10^18 / 1" | bc)"
   token_balance_hex="0x$(echo "obase=16; scale=0; $token_balance * 10^18 / 1" | bc)"
 
-  # # Create a JSON payload for the anvil_setBalance RPC method
+  # Create a JSON payload for the anvil_setBalance RPC method
   data='{"jsonrpc":"2.0","method":"anvil_setBalance","params":["'$account'", "'$eth_balance_hex'"],"id":1}'
 
   # Send the RPC request to the node
