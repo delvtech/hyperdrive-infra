@@ -1,6 +1,5 @@
 version: "3.9"
 services:
-
   ethereum:
     image: ghcr.io/delvtech/hyperdrive/devnet:${HYPERDRIVE_TAG}
     # without --block-time we're in "automine" mode and blocks are mined
@@ -20,8 +19,19 @@ services:
     command: |
       /bin/sh -c "sleep 1; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' http://ethereum:8545"
 
+  # Set account balances
+  fund-accounts:
+    image: ghcr.io/delvtech/infra/fund-accounts:${INFRA_TAG}
+    profiles:
+      - "fund-accounts"
+    depends_on:
+      - ethereum
+    volumes:
+      - ./accounts:/accounts/
+      - artifacts:/artifacts/
+
   artifacts:
-    image: ghcr.io/delvtech/infra/artifacts:${ARTIFACTS_TAG}
+    image: ghcr.io/delvtech/infra/artifacts:${INFRA_TAG}
     volumes:
       - artifacts:/var/www/artifacts/
 

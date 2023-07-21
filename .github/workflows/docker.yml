@@ -1,4 +1,4 @@
-name: Publish the artifacts image
+name: Publish the artifacts and fund-accounts images
 
 on:
   workflow_dispatch:
@@ -10,10 +10,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/artifacts
+  IMAGE_PATH: ghcr.io/${{ github.repository }}
 
 jobs:
-  push-image:
+  push-images:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,24 +31,42 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
+      - name: Extract metadata (tags, labels) for artifacts image
+        id: artifacts_meta
         uses: docker/metadata-action@v4.5.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_PATH }}/artifacts
           tags: |
-            # Add a tag matching the commit hash
-            type=sha,format=long,prefix=
             # Add a version tag when a valid semver tag is pushed.
             type=semver,pattern={{version}}
             # Add the edge tag to every image to represent the latest commit to main
             type=raw,value=edge,enable={{is_default_branch}}
 
-      - name: Build and push Docker image
+      - name: Build and push artifacts image
         uses: docker/build-push-action@v4.1.0
         with:
           context: .
           file: Dockerfile.nginx
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.artifacts_meta.outputs.tags }}
+          labels: ${{ steps.artifacts_meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for fund-accounts image
+        id: fund_accounts_meta
+        uses: docker/metadata-action@v4.5.0
+        with:
+          images: ${{ env.IMAGE_PATH }}/fund-accounts
+          tags: |
+            # Add a version tag when a valid semver tag is pushed.
+            type=semver,pattern={{version}}
+            # Add the edge tag to every image to represent the latest commit to main
+            type=raw,value=edge,enable={{is_default_branch}}
+
+      - name: Build and push fund-accounts image
+        uses: docker/build-push-action@v4.1.0
+        with:
+          context: .
+          file: Dockerfile.fund-accounts
+          push: true
+          tags: ${{ steps.fund_accounts_meta.outputs.tags }}
+          labels: ${{ steps.fund_accounts_meta.outputs.labels }}

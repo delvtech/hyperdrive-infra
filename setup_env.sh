@@ -7,13 +7,14 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./script_name.sh [flags]"
     echo "Flags:"
-    echo "  --devnet    : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
-    echo "  --data      : Runs the data framework, querying the chain and writing to postgres."
-    echo "  --frontend  : Build the frontend container."
-    echo "  --ports     : Expose docker images to your machine, as specified in env/env.ports."
-    echo "  --all       : Enable all components: devnet, data, frontend, and ports."
-    echo "  --develop   : Enable devnet, data, postgres, and ports. Suitable for local development work."
-    echo "  --ec2       : Enable devnet, data, and ports. Need configuration to external postgres."
+    echo "  --devnet         : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
+    echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
+    echo "  --frontend       : Build the frontend container."
+    echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
+    echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
+    echo "  --all            : Fund accounts and enable all components: devnet, bots, frontend, and ports."
+    echo "  --develop        : Fund accounts and enable devnet, bots and ports. Suitable for local development work."
+    echo "  --ec2            : Fund accounts and enable devnet, data, and ports. Need configuration to external postgres."
     exit 0
 fi
 
@@ -24,6 +25,7 @@ PORTS=false
 FRONTEND=false
 POSTGRES=false
 DATA=false
+FUND_ACCOUNTS=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
@@ -34,17 +36,20 @@ while [[ $# -gt 0 ]]; do
             POSTGRES=true
             PORTS=true
             DATA=true
+            FUND_ACCOUNTS=true
             ;;
         --develop)
             DEVNET=true
             POSTGRES=true
             PORTS=true
             DATA=true
+            FUND_ACCOUNTS=true
             ;;
         --ec2)
             DEVNET=true
             PORTS=true
             DATA=true
+            FUND_ACCOUNTS=true
             ;;
         --devnet)
             DEVNET=true
@@ -61,6 +66,9 @@ while [[ $# -gt 0 ]]; do
         --ports)
             PORTS=true
             ;;
+        --fund-accounts)
+            PORTS=true
+            ;;
         *)
             echo "Unknown flag: $1"
             ;;
@@ -71,7 +79,7 @@ done
 # Make a new .env file
 rm -f .env
 touch .env
-echo "# Environment for Docker compose" >> .env
+echo "# Environment for Docker compose" >>.env
 
 # Set up the COMPOSE_FILE environment variable. To ensure that we don't
 # experience issues with missing "image" or "build" fields, we always include
@@ -94,13 +102,14 @@ if [[ $full_compose_files == *":" ]]; then
 fi
 
 # Append the COMPOSE_FILE environment variable to the .env file
-echo $full_compose_files >> .env
+echo $full_compose_files >>.env
 
 # Set up the COMPOSE_PROFILES environment variable. This toggles which layers
 # should be started.
 frontend_profile="frontend"
 postgres_profile="postgres"
 data_profile="data"
+fund_accounts_profile="fund-accounts"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
@@ -110,6 +119,8 @@ if $POSTGRES; then
 fi
 if $DATA; then
     full_compose_profiles+="$data_profile,"
+if $FUND_ACCOUNTS; then
+    full_compose_profiles+="$fund_accounts_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
@@ -118,21 +129,21 @@ if [[ $full_compose_profiles == *"," ]]; then
 fi
 
 # Append the COMPOSE_PROFILES environment variable to the .env file
-echo $full_compose_profiles >> .env
+echo $full_compose_profiles >>.env
 
 # cat env.tags to the .env file
-cat env/env.tags >> .env
+cat env/env.tags >>.env
 
 # optionally cat env.ports to .env file if --ports
 if $PORTS; then
-    echo $'\n' >> .env
-    cat env/env.ports >> .env
+    echo $'\n' >>.env
+    cat env/env.ports >>.env
 fi
 
 # optionally add an env.frontend to .env file if --frontend
 if $FRONTEND; then
-    echo $'\n' >> .env
-    cat env/env.frontend >> .env
+    echo $'\n' >>.env
+    cat env/env.frontend >>.env
 fi
 
 # optionally add an env.frontend to .env file if --postgres or --data
