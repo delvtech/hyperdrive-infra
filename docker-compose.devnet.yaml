@@ -20,19 +20,18 @@ services:
       /bin/sh -c "sleep 1; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' http://ethereum:8545"
 
   # Set account balances
-  fund:
-    image: alpine:latest
+  fund-accounts:
+    image: ghcr.io/delvtech/infra/fund-accounts:${INFRA_TAG}
+    profiles:
+      - "fund-accounts"
     depends_on:
       - ethereum
     volumes:
-      - ./accounts:/accounts
-    environment:
-      - RPC_URL=http://ethereum:8545
-    command: |
-      /bin/sh -c "apk add --no-cache jq curl bc && sh accounts/set_balances.sh"
+      - ./accounts:/accounts/
+      - artifacts:/artifacts/
 
   artifacts:
-    image: ghcr.io/delvtech/infra/artifacts:${ARTIFACTS_TAG}
+    image: ghcr.io/delvtech/infra/artifacts:${INFRA_TAG}
     volumes:
       - artifacts:/var/www/artifacts/
 
