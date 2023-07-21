@@ -135,6 +135,12 @@ echo $full_compose_profiles >>.env
 # cat env.tags to the .env file
 cat env/env.tags >>.env
 
+# optionally cat env.devnet to .env file if --devnet
+if $DEVNET; then
+    echo $'\n' >>.env
+    cat env/env.devnet >>.env
+fi
+
 # optionally cat env.ports to .env file if --ports
 if $PORTS; then
     echo $'\n' >>.env
