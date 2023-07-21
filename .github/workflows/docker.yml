@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_PATH: ${{ github.repository }}
+  IMAGE_PATH: ghcr.io/${{ github.repository }}
 
 jobs:
   push-images:
@@ -35,7 +35,7 @@ jobs:
         id: artifacts_meta
         uses: docker/metadata-action@v4.5.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PATH }}/artifacts
+          images: ${{ env.IMAGE_PATH }}/artifacts
           tags: |
             # Add a version tag when a valid semver tag is pushed.
             type=semver,pattern={{version}}
@@ -55,7 +55,7 @@ jobs:
         id: fund_accounts_meta
         uses: docker/metadata-action@v4.5.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PATH }}/fund-accounts
+          images: ${{ env.IMAGE_PATH }}/fund-accounts
           tags: |
             # Add a version tag when a valid semver tag is pushed.
             type=semver,pattern={{version}}
