@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Run the `./setup_env.sh` script with `--devnet`. The test fails if this
+      # exits with a non-zero error code.
+      - name: test setup_env.sh
+        run: ./setup_env.sh --devnet

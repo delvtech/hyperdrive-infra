@@ -5,7 +5,7 @@
 
 # Check if no arguments or --help is passed
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
-    echo "Usage: ./script_name.sh [flags]"
+    echo "Usage: ./setup_env.sh [flags]"
     echo "Flags:"
     echo "  --devnet         : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
     echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
@@ -119,6 +119,7 @@ if $POSTGRES; then
 fi
 if $DATA; then
     full_compose_profiles+="$data_profile,"
+fi
 if $FUND_ACCOUNTS; then
     full_compose_profiles+="$fund_accounts_profile,"
 fi
