@@ -1,17 +1,20 @@
 version: "3.9"
 services:
 
-  bots:
+  username_reg:
     image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
     profiles:
-      - "bots"
+      - "data"
     working_dir: /app/
-    command: /bin/sh -c "python elfpy/bots/bot_server.py examples/evm_bots.py"
+    command: /bin/sh -c "python elfpy/data/register_username_server.py"
+    env_file:
+      - .env
     deploy:
       resources:
           limits:
             cpus: "0"
             memory: "0"
+
 
 volumes:
   artifacts:

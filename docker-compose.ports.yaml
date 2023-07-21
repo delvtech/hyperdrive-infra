@@ -13,9 +13,9 @@ services:
     ports:
       - ${UI_PORT}:5173
 
-  bots:
+  username_reg:
     ports:
-      - ${BOTSERVER_PORT}:5001
+      - ${USERNAME_REGISTER_PORT}:5002
 
   db:
     ports:
