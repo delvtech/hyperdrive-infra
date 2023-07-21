@@ -13,7 +13,7 @@ services:
     ports:
       - ${UI_PORT}:5173
 
-  username_reg:
+  username-reg:
     ports:
       - ${USERNAME_REGISTER_PORT}:5002
 
