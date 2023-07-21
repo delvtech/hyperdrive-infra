@@ -45,6 +45,9 @@ while [[ $# -gt 0 ]]; do
         --bots)
             BOTS=true
             ;;
+        --postgres)
+            POSTGRES=true
+            ;;
         --frontend)
             FRONTEND=true
             ;;
