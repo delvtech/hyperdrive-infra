@@ -1,6 +1,7 @@
 version: "3.9"
 services:
 
+# TODO also add acquire_data in this compose file as well
   username_reg:
     image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
     profiles:
@@ -14,7 +15,6 @@ services:
           limits:
             cpus: "0"
             memory: "0"
-
 
 volumes:
   artifacts:
