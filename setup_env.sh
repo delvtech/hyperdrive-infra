@@ -67,7 +67,7 @@ while [[ $# -gt 0 ]]; do
             PORTS=true
             ;;
         --fund-accounts)
-            PORTS=true
+            FUND_ACCOUNTS=true
             ;;
         *)
             echo "Unknown flag: $1"
