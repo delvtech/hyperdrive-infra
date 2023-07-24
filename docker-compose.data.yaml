@@ -7,17 +7,16 @@ services:
       - "data"
     working_dir: /app/
     command: /bin/sh -c "python elfpy/data/acquire_data.py"
+    depends_on:
+      - ethereum
+      - artifacts
     # This file sets postgres information
     env_file:
       - .env
     # These environment variables are connecting to other necessary containers
-    depends_on:
-      - ethereum
-      - artifacts
     environment:
       - CONTRACTS_URL=http://artifacts:${ARTIFACT_PORT}/addresses.json
       - ETHEREUM_NODE=http://ethereum:${ETH_PORT}
-
     deploy:
       resources:
           limits:
