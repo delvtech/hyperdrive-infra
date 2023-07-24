@@ -35,5 +35,12 @@ services:
     volumes:
       - artifacts:/var/www/artifacts/
 
+  checkpoint-bot:
+    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    depends_on:
+      - ethereum
+    command: |
+      /bin/sh -c "sleep 1; ARTIFACTS_URL=$ARTIFACTS_URL RPC_URL=$RPC_URL python elfpy/bots/checkpoint_bot.py"
+
 volumes:
   artifacts:
