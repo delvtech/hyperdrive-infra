@@ -1,20 +1,32 @@
 version: "3.9"
 services:
 
-# TODO also add acquire_data in this compose file as well
+  data:
+    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    profiles:
+      - "data"
+    working_dir: /app/
+    command: /bin/sh -c "python elfpy/data/acquire_data.py"
+    depends_on:
+      - ethereum
+      - artifacts
+    # This file sets postgres information
+    env_file:
+      - .env
+    # These environment variables are connecting to other necessary containers
+    environment:
+      - CONTRACTS_URL=http://artifacts:${ARTIFACT_PORT}/addresses.json
+      - ETHEREUM_NODE=http://ethereum:${ETH_PORT}
+
   username-reg:
     image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
     profiles:
       - "data"
     working_dir: /app/
     command: /bin/sh -c "python elfpy/data/register_username_server.py"
+    # This file sets postgres information
     env_file:
       - .env
-    deploy:
-      resources:
-          limits:
-            cpus: "0"
-            memory: "0"
 
 volumes:
   artifacts:
