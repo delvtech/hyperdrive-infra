@@ -17,11 +17,6 @@ services:
     environment:
       - CONTRACTS_URL=http://artifacts:${ARTIFACT_PORT}/addresses.json
       - ETHEREUM_NODE=http://ethereum:${ETH_PORT}
-    deploy:
-      resources:
-          limits:
-            cpus: "0"
-            memory: "0"
 
   username-reg:
     image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
@@ -32,11 +27,6 @@ services:
     # This file sets postgres information
     env_file:
       - .env
-    deploy:
-      resources:
-          limits:
-            cpus: "0"
-            memory: "0"
 
 volumes:
   artifacts:
