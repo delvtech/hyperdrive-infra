@@ -15,8 +15,8 @@ services:
       - .env
     # These environment variables are connecting to other necessary containers
     environment:
-      - CONTRACTS_URL=http://artifacts:${ARTIFACT_PORT}/addresses.json
-      - ETHEREUM_NODE=http://ethereum:${ETH_PORT}
+      - CONTRACTS_URL=${ARTIFACTS_URL}/addresses.json
+      - ETHEREUM_NODE=${RPC_URL}
 
   username-reg:
     image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}

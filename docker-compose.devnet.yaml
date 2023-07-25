@@ -17,7 +17,7 @@ services:
     depends_on:
       - ethereum
     command: |
-      /bin/sh -c "sleep 1; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' http://ethereum:8545"
+      /bin/sh -c "sleep 1; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' ${RPC_URL}"
 
   # Set account balances
   fund-accounts:
@@ -34,6 +34,13 @@ services:
     image: ghcr.io/delvtech/infra/artifacts:${INFRA_TAG}
     volumes:
       - artifacts:/var/www/artifacts/
+
+  checkpoint-bot:
+    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    depends_on:
+      - ethereum
+    command: |
+      /bin/sh -c "sleep 1; ARTIFACTS_URL=${ARTIFACTS_URL} RPC_URL=${RPC_URL} python elfpy/bots/checkpoint_bot.py"
 
 volumes:
   artifacts:
