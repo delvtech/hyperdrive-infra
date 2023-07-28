@@ -7,7 +7,7 @@ services:
 
   artifacts:
     ports:
-      - ${ARTIFACT_PORT}:80
+      - ${ARTIFACT_PORT}:8080
 
   hyperdrive-monorepo:
     ports:
