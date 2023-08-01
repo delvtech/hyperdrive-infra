@@ -7,9 +7,6 @@ services:
       - "data"
     working_dir: /app/
     command: /bin/sh -c "python elfpy/data/acquire_data.py"
-    depends_on:
-      - ethereum
-      - artifacts
     # This file sets postgres information
     env_file:
       - .env
