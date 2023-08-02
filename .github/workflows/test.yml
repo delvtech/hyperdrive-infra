@@ -34,7 +34,7 @@ jobs:
       - name: Build the docker-compose stack
         run: |
           source .env
-          docker compose up -d
+          docker compose pull artifacts fund-accounts
 
       - name: Sleep for 10 seconds
         run: sleep 10
