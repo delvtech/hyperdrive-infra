@@ -31,10 +31,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull public packages
+      - name: Build the docker-compose stack
         run: |
           source .env
-          docker compose pull artifacts
+          docker compose up -d
 
       - name: Sleep for 10 seconds
         run: sleep 10
