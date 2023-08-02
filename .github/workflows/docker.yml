@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v4.1.0
         with:
           context: .
-          file: Dockerfile.nginx
+          file: services/artifacts/Dockerfile.nginx
           push: true
           tags: ${{ steps.artifacts_meta.outputs.tags }}
           labels: ${{ steps.artifacts_meta.outputs.labels }}
@@ -66,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v4.1.0
         with:
           context: .
-          file: Dockerfile.fund-accounts
+          file: services/fund-accounts/Dockerfile.fund-accounts
           push: true
           tags: ${{ steps.fund_accounts_meta.outputs.tags }}
           labels: ${{ steps.fund_accounts_meta.outputs.labels }}
