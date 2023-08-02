@@ -24,6 +24,9 @@ jobs:
       - name: test setup_env.sh
         run: ./setup_env.sh --all
 
+      - name: Logout
+        run: docker logout ghcr.io
+
       - name: Log in to the Container registry
         uses: docker/login-action@v2.2.0
         with:
