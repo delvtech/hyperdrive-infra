@@ -31,15 +31,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build the docker-compose stack
+      - name: Pull public packages
         run: |
-          set -ex
           source .env
-          HYPERDRIVE_TAG=edge
-          INFRA_TAG=edge
-          ELFPY_TAG=edge
-          HYPERDRIVE_MONOREPO_TAG=edge
-          docker compose up -d
+          docker compose pull data username-reg checkpoint-bot
 
       - name: Sleep for 10 seconds
         run: sleep 10
