@@ -34,7 +34,10 @@ jobs:
       - name: Build the docker-compose stack
         run: |
           source .env
-          echo "HYPERDRIVE_TAG=$HYPERDRIVE_TAG"
+          HYPERDRIVE_TAG=edge
+          INFRA_TAG=edge
+          ELFPY_TAG=edge
+          HYPERDRIVE_MONOREPO_TAG=edge
           docker compose up -d
 
       - name: Sleep for 10 seconds
