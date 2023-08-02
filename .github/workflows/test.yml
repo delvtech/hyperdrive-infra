@@ -19,17 +19,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2.2.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       # Run the `./setup_env.sh` script with `--all`. The test fails if this
       # exits with a non-zero error code.
       - name: test setup_env.sh
         run: ./setup_env.sh --all
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the docker-compose stack
         run: docker compose up -d
