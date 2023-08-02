@@ -28,11 +28,7 @@ jobs:
         run: source .env
 
       - name: Check env tags
-        run: |
-          echo HYPERDRIVE_TAG=$HYPERDRIVE_TAG
-          echo INFRA_TAG=$INFRA_TAG
-          echo ELFPY_TAG=$ELFPY_TAG
-          echo HYPERDRIVE_MONOREPO_TAG=$HYPERDRIVE_MONOREPO_TAG
+        run: env
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2.2.0
