@@ -1,6 +1,7 @@
 name: Test
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -18,7 +19,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Run the `./setup_env.sh` script with `--devnet`. The test fails if this
+      # Run the `./setup_env.sh` script with `--all`. The test fails if this
       # exits with a non-zero error code.
       - name: test setup_env.sh
-        run: ./setup_env.sh --devnet
+        run: ./setup_env.sh --all
+
+      - name: Build the docker-compose stack
+        run: docker compose up -d
+
+      - name: Sleep for 10 seconds
+        shell: bash
+        run: sleep 10
+
+      - name: Check services
+        run: docker compose ps -a
