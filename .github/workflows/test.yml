@@ -34,7 +34,7 @@ jobs:
       - name: Pull public packages
         run: |
           source .env
-          docker compose pull data username-reg checkpoint-bot
+          docker compose pull data username-reg
 
       - name: Sleep for 10 seconds
         run: sleep 10
