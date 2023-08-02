@@ -32,10 +32,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the docker-compose stack
-        run: docker compose up -d
+        run: |
+          source .env
+          docker compose up -d
 
       - name: Sleep for 10 seconds
-        shell: bash
         run: sleep 10
 
       - name: Check services
