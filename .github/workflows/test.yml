@@ -24,8 +24,8 @@ jobs:
       - name: test setup_env.sh
         run: ./setup_env.sh --all
 
-      - name: Check env
-        run: cat .env
+      - name: Import env vars
+        run: source .env
 
       - name: Check env tags
         run: |
