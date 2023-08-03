@@ -39,7 +39,7 @@ jobs:
       - name: Check mine service
         run: |
           DIRNAME=$(basename $(pwd))
-          MINE_ERROR=$(docker wait $(DIRNAME)-mine-1)
+          MINE_ERROR=$(docker wait $DIRNAME-mine-1)
           if [ $MINE_ERROR -ne 0 ]; then
             echo "Mine service exited with an error"
             exit 1
@@ -48,7 +48,7 @@ jobs:
       - name: Check fund Accounts service
         run: |
           DIRNAME=$(basename $(pwd))
-          FUND_ACCOUNTS_ERROR=$(docker wait $(DIRNAME)-fund-accounts-1)
+          FUND_ACCOUNTS_ERROR=$(docker wait $DIRNAME-fund-accounts-1)
           if [ $FUND_ACCOUNTS_ERROR -ne 0 ]; then
             echo "Fund accounts service exited with an error"
             exit 1
