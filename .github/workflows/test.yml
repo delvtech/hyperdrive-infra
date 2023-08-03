@@ -49,7 +49,7 @@ jobs:
 
           docker compose up -d
 
-      # The mine service should exit with a non-zero error code.
+      # The mine service should exit with a zero error code.
       - name: Check mine service
         run: |
           DIRNAME=$(basename $(pwd))
@@ -60,7 +60,7 @@ jobs:
             exit 1
           fi
 
-      # The fund-accounts should exit with a non-zero error code.
+      # The fund-accounts should exit with a zero error code.
       - name: Check fund Accounts service
         run: |
           DIRNAME=$(basename $(pwd))
