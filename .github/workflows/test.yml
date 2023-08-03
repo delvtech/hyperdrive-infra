@@ -34,12 +34,12 @@ jobs:
       - name: Build the docker-compose stack
         run: |
           source .env
-          
+
           # Build a fresh infra images if this PR includes changes to the
           # /services directory.
-          SERVICES_CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -m 1 "^services/")
+          SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -m 1 "^services/")
 
-          if [ -n $SERVICES_CHANGED ]; then
+          if [ -n "$SERVICES_CHANGED" ]; then
             docker build services/artifacts -t ghcr.io/${{ github.repository }}/artifacts:${{ github.sha }}
             docker build services/fund-accounts -t ghcr.io/${{ github.repository }}/fund-accounts:${{ github.sha }}
             export INFRA_TAG=${{ github.sha }}
@@ -72,7 +72,7 @@ jobs:
       # The ethereum service should be running.
       - name: Check ethereum service
         run: |
-          if [ -z $(docker compose ps -q ethereum) ]; then
+          if [ -z "$(docker compose ps -q ethereum)" ]; then
             echo "Ethereum service exited unexpectedly"
             exit 1
           fi
@@ -80,7 +80,7 @@ jobs:
       # The artifacts service should be running.
       - name: Check artifacts service
         run: |
-          if [ -z $(docker compose ps -q artifacts) ]; then
+          if [ -z "$(docker compose ps -q artifacts)" ]; then
             echo "Artifacts service exited unexpectedly"
             exit 1
           fi
@@ -88,7 +88,7 @@ jobs:
       # The checkpoint-bot service should be running.
       - name: Check checkpoint-bot service
         run: |
-          if [ -z $(docker compose ps -q checkpoint-bot) ]; then
+          if [ -z "$(docker compose ps -q checkpoint-bot)" ]; then
             echo "Checkpoint bot service exited unexpectedly"
             exit 1
           fi
@@ -96,7 +96,7 @@ jobs:
       # The data service should be running.
       - name: Check data service
         run: |
-          if [ -z $(docker compose ps -q data) ]; then
+          if [ -z "$(docker compose ps -q data)" ]; then
             echo "Data service exited unexpectedly"
             exit 1
           fi
@@ -104,14 +104,14 @@ jobs:
       # The db service should be running.
       - name: Check db service
         run: |
-          if [ -z $(docker compose ps -q db) ]; then
+          if [ -z "$(docker compose ps -q db)" ]; then
             exit 1
           fi
 
       # The hyperdrive-monorepo service should be running.
       - name: Check hyperdrive-monorepo service
         run: |
-          if [ -z $(docker compose ps -q hyperdrive-monorepo) ]; then
+          if [ -z "$(docker compose ps -q hyperdrive-monorepo)" ]; then
             echo "Hyperdrive monorepo service exited unexpectedly"
             exit 1
           fi
