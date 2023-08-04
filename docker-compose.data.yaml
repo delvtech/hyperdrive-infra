@@ -6,7 +6,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python elfpy/data/acquire_data.py"
+    command: /bin/sh -c "python src/elfpy/data/acquire_data.py"
     # This file sets postgres information
     env_file:
       - .env
@@ -20,7 +20,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python elfpy/trading_competition/register_username_server.py"
+    command: /bin/sh -c "python src/elfpy/trading_competition/register_username_server.py"
     # This file sets postgres information
     env_file:
       - .env
