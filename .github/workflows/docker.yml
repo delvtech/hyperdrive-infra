@@ -45,8 +45,7 @@ jobs:
       - name: Build and push artifacts image
         uses: docker/build-push-action@v4.1.0
         with:
-          context: .
-          file: Dockerfile.nginx
+          context: ./services/artifacts
           push: true
           tags: ${{ steps.artifacts_meta.outputs.tags }}
           labels: ${{ steps.artifacts_meta.outputs.labels }}
@@ -65,8 +64,7 @@ jobs:
       - name: Build and push fund-accounts image
         uses: docker/build-push-action@v4.1.0
         with:
-          context: .
-          file: Dockerfile.fund-accounts
+          context: ./services/fund-accounts
           push: true
           tags: ${{ steps.fund_accounts_meta.outputs.tags }}
           labels: ${{ steps.fund_accounts_meta.outputs.labels }}

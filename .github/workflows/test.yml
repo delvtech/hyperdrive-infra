@@ -1,6 +1,7 @@
 name: Test
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -15,10 +16,104 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          # Fetch the full history so that the `git diff` command can be used
+          fetch-depth: 2
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Run the `./setup_env.sh` script with `--devnet`. The test fails if this
+      # Run the `./setup_env.sh` script with `--all`. The test fails if this
       # exits with a non-zero error code.
       - name: test setup_env.sh
-        run: ./setup_env.sh --devnet
+        run: ./setup_env.sh --all
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the docker-compose stack
+        run: |
+          source .env
+
+          # Build fresh infra images if this PR includes changes to the
+          # /services directory.
+          SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -m 1 "^services/")
+
+          if [ -n "$SERVICES_CHANGED" ]; then
+            docker build services/artifacts -t ghcr.io/${{ github.repository }}/artifacts:${{ github.sha }}
+            docker build services/fund-accounts -t ghcr.io/${{ github.repository }}/fund-accounts:${{ github.sha }}
+            export INFRA_TAG=${{ github.sha }}
+          fi
+
+          docker compose up -d
+
+      # The mine service should exit with a zero error code.
+      - name: Check mine service
+        run: |
+          DIRNAME=$(basename $(pwd))
+          MINE_ERROR=$(docker wait $DIRNAME-mine-1)
+
+          if [ $MINE_ERROR -ne 0 ]; then
+            echo "Mine service exited with an error"
+            exit 1
+          fi
+
+      # The fund-accounts should exit with a zero error code.
+      - name: Check fund Accounts service
+        run: |
+          DIRNAME=$(basename $(pwd))
+          FUND_ACCOUNTS_ERROR=$(docker wait $DIRNAME-fund-accounts-1)
+
+          if [ $FUND_ACCOUNTS_ERROR -ne 0 ]; then
+            echo "Fund accounts service exited with an error"
+            exit 1
+          fi
+
+      # The ethereum service should be running.
+      - name: Check ethereum service
+        run: |
+          if [ -z "$(docker compose ps -q ethereum)" ]; then
+            echo "Ethereum service exited unexpectedly"
+            exit 1
+          fi
+
+      # The artifacts service should be running.
+      - name: Check artifacts service
+        run: |
+          if [ -z "$(docker compose ps -q artifacts)" ]; then
+            echo "Artifacts service exited unexpectedly"
+            exit 1
+          fi
+
+      # The checkpoint-bot service should be running.
+      - name: Check checkpoint-bot service
+        run: |
+          if [ -z "$(docker compose ps -q checkpoint-bot)" ]; then
+            echo "Checkpoint bot service exited unexpectedly"
+            exit 1
+          fi
+
+      # The data service should be running.
+      - name: Check data service
+        run: |
+          if [ -z "$(docker compose ps -q data)" ]; then
+            echo "Data service exited unexpectedly"
+            exit 1
+          fi
+
+      # The db service should be running.
+      - name: Check db service
+        run: |
+          if [ -z "$(docker compose ps -q db)" ]; then
+            exit 1
+          fi
+
+      # The hyperdrive-monorepo service should be running.
+      - name: Check hyperdrive-monorepo service
+        run: |
+          if [ -z "$(docker compose ps -q hyperdrive-monorepo)" ]; then
+            echo "Hyperdrive monorepo service exited unexpectedly"
+            exit 1
+          fi
