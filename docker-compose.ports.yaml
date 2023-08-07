@@ -17,6 +17,10 @@ services:
     ports:
       - ${USERNAME_REGISTER_PORT}:5002
 
+  dashboard:
+    ports:
+      - ${DASHBOARD_PORT}:8501
+
   db:
     ports:
       - ${DB_PORT}:5432

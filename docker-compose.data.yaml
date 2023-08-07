@@ -6,7 +6,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python elfpy/data/acquire_data.py"
+    command: /bin/sh -c "python lib/chainsync/bin/acquire_data.py"
     # This file sets postgres information
     env_file:
       - .env
@@ -20,10 +20,26 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python elfpy/data/register_username_server.py"
+    command: /bin/sh -c "python lib/chainsync/bin/register_username_server.py"
     # This file sets postgres information
     env_file:
       - .env
+
+  dashboard:
+    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    profiles:
+      - "data"
+    working_dir: /app/
+    command: /bin/sh -c "streamlit run lib/chainsync/bin/run_hyperdrive_dashboard.py --server.port=8501 --server.headless true"
+    # This file sets postgres information
+    env_file:
+      - .env
+    environment:
+      # TODO these should eventually be removed in favor of seperate process writing
+      # pnl to database
+      - ARTIFACTS_URL=${ARTIFACTS_URL}
+      - RPC_URL=${RPC_URL}
+
 
 volumes:
   artifacts:
