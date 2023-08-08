@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           # Fetch the full history so that the `git diff` command can be used
-          fetch-depth: 2
+          fetch-depth: ${{ github.event.pull_request.commits }}
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,6 +41,8 @@ jobs:
           # Build fresh infra images if this PR includes changes to the
           # /services directory.
           SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -m 1 "^services/")
+
+          echo "Test"
 
           if [ -n "$SERVICES_CHANGED" ]; then
             echo "Changed"
