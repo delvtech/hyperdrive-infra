@@ -43,10 +43,13 @@ jobs:
           SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -m 1 "^services/")
 
           if [ -n "$SERVICES_CHANGED" ]; then
+            echo "Changed"
             docker build services/artifacts -t ghcr.io/${{ github.repository }}/artifacts:${{ github.sha }}
             docker build services/fund-accounts -t ghcr.io/${{ github.repository }}/fund-accounts:${{ github.sha }}
             export INFRA_TAG=${{ github.sha }}
           fi
+
+          echo "Not changed"
 
           docker compose up -d
 
