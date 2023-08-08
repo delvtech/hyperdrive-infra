@@ -45,7 +45,7 @@ jobs:
           DIFFS=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           echo "Post diff, pre grep"
 
-          SERVICES_CHANGED=$(echo $DIFFS | grep -m 1 "^services/")
+          SERVICES_CHANGED=$(echo "$DIFFS" | grep -m 1 "^services/")
           echo "post grep"
 
 
