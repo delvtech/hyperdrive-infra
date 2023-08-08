@@ -46,7 +46,7 @@ jobs:
 
           echo "$DIFFS"
 
-          SERVICES_CHANGED=$(echo "$DIFFS" | grep "/")
+          SERVICES_CHANGED=$(echo "$DIFFS" | grep -m 1 "^env/")
           echo "post grep"
 
 
