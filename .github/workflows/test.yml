@@ -39,9 +39,9 @@ jobs:
 
           # Build fresh infra images if this PR includes changes to the
           # /services directory.
-          SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -m 1 "^services/" || false)
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
 
-          if [ -n "$SERVICES_CHANGED" ]; then
+          if echo "$CHANGED_FILES" | grep -m 1 "^services/"; then
             docker build services/artifacts -t ghcr.io/${{ github.repository }}/artifacts:${{ github.sha }}
             docker build services/fund-accounts -t ghcr.io/${{ github.repository }}/fund-accounts:${{ github.sha }}
             export INFRA_TAG=${{ github.sha }}
