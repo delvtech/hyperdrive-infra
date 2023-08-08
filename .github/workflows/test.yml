@@ -35,7 +35,6 @@ jobs:
 
       - name: Build the docker-compose stack
         run: |
-          set -ex
           source .env
 
           echo "Pre diff"
@@ -44,6 +43,8 @@ jobs:
           # /services directory.
           DIFFS=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           echo "Post diff, pre grep"
+
+          echo "$DIFFS"
 
           SERVICES_CHANGED=$(echo "$DIFFS" | grep "/")
           echo "post grep"
