@@ -30,7 +30,9 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "streamlit run lib/chainsync/bin/run_hyperdrive_dashboard.py --server.port=8501 --server.headless true"
+    command: /bin/sh -c "streamlit run lib/chainsync/bin/run_hyperdrive_dashboard.py \
+               --server.port=8501 --server.headless true\
+               --server.fileWatcherType=none --browser.gatherUsageStats=false"
     # This file sets postgres information
     env_file:
       - .env
