@@ -35,6 +35,7 @@ jobs:
 
       - name: Build the docker-compose stack
         run: |
+          set -ex
           source .env
 
           # Build fresh infra images if this PR includes changes to the
