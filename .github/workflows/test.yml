@@ -39,9 +39,9 @@ jobs:
 
           # Build fresh infra images if this PR includes changes to the
           # /services directory.
-          SERVICES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -m 1 "^services/")
+          FILES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
 
-          if [ -n "$SERVICES_CHANGED" ]; then
+          if echo "$FILES_CHANGED" | grep -m 1 "^services/"; then
             docker build services/artifacts -t ghcr.io/${{ github.repository }}/artifacts:${{ github.sha }}
             docker build services/fund-accounts -t ghcr.io/${{ github.repository }}/fund-accounts:${{ github.sha }}
             export INFRA_TAG=${{ github.sha }}
@@ -100,6 +100,22 @@ jobs:
         run: |
           if [ -z "$(docker compose ps -q data)" ]; then
             echo "Data service exited unexpectedly"
+            exit 1
+          fi
+
+      # The username reg service should be running.
+      - name: Check username-reg service
+        run: |
+          if [ -z "$(docker compose ps -q username-reg)" ]; then
+            echo "Username reg service exited unexpectedly"
+            exit 1
+          fi
+
+      # The dashboard service should be running.
+      - name: Check dashboard service
+        run: |
+          if [ -z "$(docker compose ps -q dashboard)" ]; then
+            echo "Dashboard service exited unexpectedly"
             exit 1
           fi
 
