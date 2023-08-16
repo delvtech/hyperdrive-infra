@@ -115,7 +115,7 @@ jobs:
       - name: Check dashboard service
         run: |
           if [ -z "$(docker compose ps -q dashboard)" ]; then
-            echo "Data service exited unexpectedly"
+            echo "Dashboard service exited unexpectedly"
             exit 1
           fi
 
