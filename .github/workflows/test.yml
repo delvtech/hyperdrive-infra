@@ -107,7 +107,7 @@ jobs:
       - name: Check username-reg service
         run: |
           if [ -z "$(docker compose ps -q username-reg)" ]; then
-            echo "Data service exited unexpectedly"
+            echo "Username reg service exited unexpectedly"
             exit 1
           fi
 
