@@ -21,8 +21,8 @@ jobs:
       # Run setup_env.sh and output the generated .env contents into the environment
       - name: Setup env
         run: |
-          sh ./setup_env.sh --all
+          bash ./setup_env.sh --all
           cat .env >> $GITHUB_ENV
 
       - name: Run test
-        run: sh ./test/${{ inputs.name }}.sh
+        run: bash ./test/${{ inputs.name }}.sh
