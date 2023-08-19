@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   ethereum:
-    image: ${HYPERDRIVE_IMAGE}
+    image: ${DEVNET_IMAGE}
     # without --block-time we're in "automine" mode and blocks are mined
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.

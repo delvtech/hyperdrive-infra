@@ -1,7 +1,7 @@
-# The hyperdrive image that the infra containers are being developed for
-export HYPERDRIVE_IMAGE=ghcr.io/delvtech/hyperdrive/devnet:0.0.11
+# The devnet image that the infra containers are being developed for
+export DEVNET_IMAGE=ghcr.io/delvtech/hyperdrive/devnet:0.0.11
 
-echo "Testing containers with Hyperdrive image $HYPERDRIVE_IMAGE"
+echo "Testing containers with devnet image $DEVNET_IMAGE"
 
 timestamp=$(date +%s)
 
