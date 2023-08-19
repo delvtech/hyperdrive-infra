@@ -7,15 +7,15 @@ on:
       - main
 
 jobs:
-  # Check if any files in the /containers directory were changed in this PR
+  # Check if any files in the /images directory were changed in this PR
   detect-changes:
     uses: ./.github/workflows/check-diff.yaml
     with:
-      pattern: ^containers/
+      pattern: ^images/
 
-  test-containers:
+  test-images:
     needs: detect-changes
     if: needs.detect-changes.outputs.changed == 'true'
     uses: ./.github/workflows/run-test.yaml
     with:
-      name: test_containers
+      name: test_images

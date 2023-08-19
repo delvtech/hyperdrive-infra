@@ -13,10 +13,10 @@ jobs:
     uses: ./.github/workflows/publish-image.yml
     with:
       name: artifacts
-      context: ./containers/artifacts
+      context: ./images/artifacts
 
   push-fund-accounts-image:
     uses: ./.github/workflows/publish-image.yml
     with:
       name: fund-accounts
-      context: ./containers/fund-accounts
+      context: ./images/fund-accounts
