@@ -1,0 +1,28 @@
+name: Run test
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: The name of the file in the /test directory to run (without the extension)
+        type: string
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Run setup_env.sh and output the generated .env contents into the environment
+      - name: Setup env
+        run: |
+          sh ./setup_env.sh --all
+          cat .env >> $GITHUB_ENV
+
+      - name: Run test
+        run: sh ./test/${{ inputs.name }}.sh
