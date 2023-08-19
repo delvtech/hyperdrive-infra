@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   hyperdrive-monorepo:
-    image: ghcr.io/delvtech/hyperdrive-monorepo/hyperdrive-monorepo:${HYPERDRIVE_MONOREPO_TAG}
+    image: ${HYPERDRIVE_MONOREPO_IMAGE}
     profiles:
       - "frontend"
     environment:
