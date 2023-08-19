@@ -60,9 +60,9 @@ if [ -z "$(docker compose ps -q db)" ]; then
   exit 1
 fi
 
-# The hyperdrive-monorepo service should be running.
-if [ -z "$(docker compose ps -q hyperdrive-monorepo)" ]; then
-  echo "Hyperdrive monorepo service exited unexpectedly"
+# The frontend service should be running.
+if [ -z "$(docker compose ps -q frontend)" ]; then
+  echo "Frontend service exited unexpectedly"
   exit 1
 fi
 

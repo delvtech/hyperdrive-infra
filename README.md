@@ -5,7 +5,7 @@ compose app. The compose app is composed of several services:
 - ethereum: Runs an Ethereum node.
 - migrations: Migrates the Hyperdrive contracts onto the Ethereum node.
 - artifacts: A file server that serves up artifacts about the Hyperdrive deployment.
-- hyperdrive-monorepo: A full monorepo with a trading UI and supporting packages
+- frontend: A full monorepo with a trading UI and supporting packages
 
 ## Setup
 

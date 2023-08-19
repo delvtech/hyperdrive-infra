@@ -1,8 +1,8 @@
 version: "3.9"
 services:
 
-  hyperdrive-monorepo:
-    image: ${HYPERDRIVE_MONOREPO_IMAGE}
+  frontend:
+    image: ${FRONTEND_IMAGE}
     profiles:
       - "frontend"
     environment:

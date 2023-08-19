@@ -9,7 +9,7 @@ services:
     ports:
       - ${ARTIFACT_PORT}:8080
 
-  hyperdrive-monorepo:
+  frontend:
     ports:
       - ${UI_PORT}:5173
 
