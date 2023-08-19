@@ -21,6 +21,13 @@ jobs:
       - name: Setup env
         run: bash ./setup_env.sh --all
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run test
         run: |
           source .env
