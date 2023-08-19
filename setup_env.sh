@@ -132,9 +132,9 @@ fi
 # Append the COMPOSE_PROFILES environment variable to the .env file
 echo $full_compose_profiles >>.env
 
-# cat env.common, env.tags, and env.ports to the .env file
+# cat env.common, env.images, and env.ports to the .env file
 cat env/env.common >> .env
-cat env/env.tags >>.env
+cat env/env.images >>.env
 cat env/env.ports >>.env
 
 # optionally cat env.devnet to .env file if --devnet
