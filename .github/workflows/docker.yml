@@ -8,10 +8,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_PATH: ghcr.io/${{ github.repository }}
-
 jobs:
   push-artifacts-image:
     uses: ./.github/workflows/publish-image.yml
