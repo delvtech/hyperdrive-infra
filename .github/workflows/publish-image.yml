@@ -1,0 +1,52 @@
+name: Publish container image
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: The name of image
+        type: string
+        required: true
+      context:
+        description: The path to use for the context
+        type: string
+        required: true
+
+jobs:
+  push-images:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v4.5.0
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ inputs.name }}
+          tags: |
+            # Add a version tag when a valid semver tag is pushed.
+            type=semver,pattern={{version}}
+            # Add the edge tag to every image to represent the latest commit to main
+            type=raw,value=edge,enable={{is_default_branch}}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v4.1.0
+        with:
+          context: ${{ inputs.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
