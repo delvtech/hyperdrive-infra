@@ -1,0 +1,22 @@
+name: Test env changes
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Check if the setup_env.sh file or any files in the /env directory were
+  # changed in this PR
+  detect-changes:
+    uses: ./.github/workflows/check-diff.yaml
+    with:
+      pattern: ^env/\|^./setup_env.sh$
+
+  test-env:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.changed == 'true'
+    uses: ./.github/workflows/run-test.yaml
+    with:
+      name: test_compose

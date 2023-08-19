@@ -1,0 +1,21 @@
+name: Test container changes
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Check if any files in the /images directory were changed in this PR
+  detect-changes:
+    uses: ./.github/workflows/check-diff.yaml
+    with:
+      pattern: ^images/
+
+  test-images:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.changed == 'true'
+    uses: ./.github/workflows/run-test.yaml
+    with:
+      name: test_images

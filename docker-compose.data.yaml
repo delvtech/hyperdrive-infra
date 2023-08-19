@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   data:
-    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    image: ${ELFPY_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -11,7 +11,7 @@ services:
       - .env
 
   username-reg:
-    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    image: ${ELFPY_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -20,7 +20,7 @@ services:
       - .env
 
   dashboard:
-    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    image: ${ELFPY_IMAGE}
     profiles:
       - "data"
     working_dir: /app/

@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   ethereum:
-    image: ghcr.io/delvtech/hyperdrive/devnet:${HYPERDRIVE_TAG}
+    image: ${DEVNET_IMAGE}
     # without --block-time we're in "automine" mode and blocks are mined
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
@@ -21,7 +21,7 @@ services:
 
   # Set account balances
   fund-accounts:
-    image: ghcr.io/delvtech/infra/fund-accounts:${INFRA_TAG}
+    image: ${FUND_ACCOUNTS_IMAGE}
     profiles:
       - "fund-accounts"
     depends_on:
@@ -31,12 +31,12 @@ services:
       - artifacts:/artifacts/
 
   artifacts:
-    image: ghcr.io/delvtech/infra/artifacts:${INFRA_TAG}
+    image: ${ARTIFACTS_IMAGE}
     volumes:
       - artifacts:/var/www/artifacts/
 
   checkpoint-bot:
-    image: ghcr.io/delvtech/elf-simulations/elf-simulations:${ELFPY_TAG}
+    image: ${ELFPY_IMAGE}
     depends_on:
       - ethereum
     command: |

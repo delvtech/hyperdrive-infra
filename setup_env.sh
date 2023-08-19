@@ -132,26 +132,30 @@ fi
 # Append the COMPOSE_PROFILES environment variable to the .env file
 echo $full_compose_profiles >>.env
 
-# cat env.common, env.tags, and env.ports to the .env file
+# cat env.common, env.images, and env.ports to the .env file
+echo "" >>.env
 cat env/env.common >> .env
-cat env/env.tags >>.env
+echo "" >>.env
+cat env/env.images >>.env
+echo "" >>.env
 cat env/env.ports >>.env
 
 # optionally cat env.devnet to .env file if --devnet
 if $DEVNET; then
-    echo $'\n' >>.env
+    echo "" >>.env
     cat env/env.devnet >>.env
 fi
 
 # optionally add an env.frontend to .env file if --frontend
 if $FRONTEND; then
-    echo $'\n' >>.env
+    echo "" >>.env
     cat env/env.frontend >>.env
 fi
 
 # optionally add an env.frontend to .env file if --postgres or --data
 # POSTGRES uses these flags to launch postgres, DATA uses these flags to connect
 if $POSTGRES || $DATA; then
+    echo "" >>.env
     cat env/env.postgres >> .env
 fi
 
