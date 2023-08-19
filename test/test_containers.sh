@@ -3,7 +3,6 @@ export HYPERDRIVE_IMAGE=ghcr.io/delvtech/hyperdrive/devnet:0.0.11
 
 echo "Testing containers with Hyperdrive image $HYPERDRIVE_IMAGE"
 
-dir_path=$(dirname $(realpath $0))
 timestamp=$(date +%s)
 
 export ARTIFACTS_IMAGE="test/artifacts:$timestamp"
