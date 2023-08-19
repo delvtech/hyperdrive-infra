@@ -15,7 +15,7 @@ jobs:
 
   test-containers:
     needs: detect-changes
-    if: needs.detect-changes.outputs.changed == true
+    if: needs.detect-changes.outputs.changed == 'true'
     uses: ./.github/workflows/run-test.yaml
     with:
       name: test_containers
