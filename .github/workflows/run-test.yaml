@@ -18,11 +18,10 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Run setup_env.sh and output the generated .env contents into the environment
       - name: Setup env
-        run: |
-          bash ./setup_env.sh --all
-          cat .env >> $GITHUB_ENV
+        run: bash ./setup_env.sh --all
 
       - name: Run test
-        run: bash ./test/${{ inputs.name }}.sh
+        run: |
+          source .env
+          bash ./test/${{ inputs.name }}.sh
