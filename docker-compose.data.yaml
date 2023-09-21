@@ -9,6 +9,7 @@ services:
     command: /bin/sh -c "python lib/chainsync/bin/run_acquire_data.py"
     env_file:
       - .env
+    restart: always
 
   analysis:
     image: ${ELFPY_IMAGE}
@@ -18,6 +19,7 @@ services:
     command: /bin/sh -c "python lib/chainsync/bin/run_data_analysis.py"
     env_file:
       - .env
+    restart: always
 
   username-reg:
     image: ${ELFPY_IMAGE}
@@ -38,7 +40,11 @@ services:
                --server.fileWatcherType=none --browser.gatherUsageStats=false"
     env_file:
       - .env
-
+    # Memory leak in dashboard, below settings will kill the dashboard when this limit is reached
+    # the dashboard will then restart after, which clears up memory
+    mem_limit: "2g"
+    mem_reservation: "2g"
+    restart: always
 
 volumes:
   artifacts:
