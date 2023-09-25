@@ -21,12 +21,12 @@ services:
       - .env
     restart: always
 
-  username-reg:
+  database-api-server:
     image: ${ELFPY_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/register_username_server.py"
+    command: /bin/sh -c "python lib/chainsync/bin/database_api_server.py"
     env_file:
       - .env
 

@@ -43,7 +43,7 @@ if [ -z "$(docker compose ps -q data)" ]; then
 fi
 
 # The username reg service should be running.
-if [ -z "$(docker compose ps -q username-reg)" ]; then
+if [ -z "$(docker compose ps -q database-api-server)" ]; then
   echo "Username reg service exited unexpectedly"
   exit 1
 fi
