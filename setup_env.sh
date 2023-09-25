@@ -14,7 +14,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
     echo "  --all            : Fund accounts and enable all components: devnet, bots, frontend, and ports."
     echo "  --develop        : Fund accounts and enable devnet, bots and ports. Suitable for local development work."
-    echo "  --ec2            : Fund accounts and enable devnet, data, and ports. Need configuration to external postgres."
+    echo "  --ec2            : Fund accounts and enable devnet, frontend, data, and ports. Need configuration to external postgres."
     exit 0
 fi
 
@@ -47,6 +47,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --ec2)
             DEVNET=true
+            FRONTEND=true
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
