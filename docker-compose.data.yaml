@@ -26,7 +26,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/database_api_server.py"
+    command: /bin/sh -c "python lib/chainsync/bin/run_api_server.py"
     env_file:
       - .env
 
