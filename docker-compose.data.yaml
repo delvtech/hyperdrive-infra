@@ -36,8 +36,10 @@ services:
       - "data"
     working_dir: /app/
     command: /bin/sh -c "streamlit run lib/chainsync/bin/streamlit/Dashboard.py \
-               --server.port=8501 --server.headless true\
-               --server.fileWatcherType=none --browser.gatherUsageStats=false"
+               --server.port=8501 \
+               --server.headless true \
+               --server.fileWatcherType=none \
+               --browser.gatherUsageStats=false"
     env_file:
       - .env
     # Memory leak in dashboard, below settings will kill the dashboard when this limit is reached
