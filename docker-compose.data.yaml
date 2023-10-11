@@ -6,16 +6,27 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/run_chainsync.py"
+    command: /bin/sh -c "python lib/chainsync/bin/run_acquire_data.py"
     env_file:
       - .env
+    restart: always
 
-  username-reg:
+  analysis:
     image: ${ELFPY_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/register_username_server.py"
+    command: /bin/sh -c "python lib/chainsync/bin/run_data_analysis.py"
+    env_file:
+      - .env
+    restart: always
+
+  database-api-server:
+    image: ${ELFPY_IMAGE}
+    profiles:
+      - "data"
+    working_dir: /app/
+    command: /bin/sh -c "python lib/chainsync/bin/run_api_server.py"
     env_file:
       - .env
 
@@ -24,12 +35,18 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "streamlit run lib/chainsync/bin/run_hyperdrive_dashboard.py \
-               --server.port=8501 --server.headless true\
-               --server.fileWatcherType=none --browser.gatherUsageStats=false"
+    command: /bin/sh -c "streamlit run lib/chainsync/bin/streamlit/Dashboard.py \
+               --server.port=8501 \
+               --server.headless true \
+               --server.fileWatcherType=none \
+               --browser.gatherUsageStats=false"
     env_file:
       - .env
-
+    # Memory leak in dashboard, below settings will kill the dashboard when this limit is reached
+    # the dashboard will then restart after, which clears up memory
+    mem_limit: "2g"
+    mem_reservation: "2g"
+    restart: always
 
 volumes:
   artifacts:
