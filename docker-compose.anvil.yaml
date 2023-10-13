@@ -6,7 +6,7 @@ services:
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
     command: |
-      'anvil --load-state ./data --host 0.0.0.0 --code-size-limit 9999999999 --chain-id ${CHAIN_ID}'
+      'anvil --load-state ./data --block-time 6 --host 0.0.0.0 --code-size-limit 9999999999 --chain-id ${CHAIN_ID}'
     volumes:
       - artifacts:/src/artifacts/
 
