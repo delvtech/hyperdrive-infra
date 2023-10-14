@@ -42,7 +42,8 @@ services:
   checkpoint-bot:
     image: ${ELFPY_IMAGE}
     command: |
-      /bin/sh -c "sleep 1; ARTIFACTS_URI=${ARTIFACTS_URI} RPC_URI=${RPC_URI} python lib/agent0/bin/checkpoint_bot.py"
+      /bin/sh -c "sleep 1; ARTIFACTS_URI=${ARTIFACTS_URI} RPC_URI=${RPC_URI} BLOCK_TIME=6 BLOCK_TIMESTAMP_INTERVAL=312 python lib/agent0/bin/checkpoint_bot.py"
+      # TODO parameterize block time and block timestamp interval
 
 volumes:
   artifacts:
