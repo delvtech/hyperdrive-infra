@@ -9,7 +9,6 @@ services:
     command: /bin/sh -c "python lib/chainsync/bin/run_acquire_data.py"
     env_file:
       - .env
-    restart: always
 
   analysis:
     image: ${ELFPY_IMAGE}
@@ -19,7 +18,6 @@ services:
     command: /bin/sh -c "python lib/chainsync/bin/run_data_analysis.py"
     env_file:
       - .env
-    restart: always
 
   database-api-server:
     image: ${ELFPY_IMAGE}
@@ -47,6 +45,16 @@ services:
     mem_limit: "2g"
     mem_reservation: "2g"
     restart: always
+
+  # Set initial username mappings
+  init-usernames:
+    image: ${ELFPY_IMAGE}
+    profiles:
+      - "data"
+    working_dir: /app/
+    command: /bin/sh -c "python lib/chainsync/bin/update_usernames.py"
+    env_file:
+      - .env
 
 volumes:
   artifacts:

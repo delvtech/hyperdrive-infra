@@ -7,52 +7,54 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./setup_env.sh [flags]"
     echo "Flags:"
-    echo "  --devnet         : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
+    echo "  --anvil          : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
     echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
     echo "  --frontend       : Build the frontend container."
     echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
-    echo "  --all            : Fund accounts and enable all components: devnet, bots, frontend, and ports."
-    echo "  --develop        : Fund accounts and enable devnet, bots and ports. Suitable for local development work."
-    echo "  --ec2            : Fund accounts and enable devnet, data, and ports. Need configuration to external postgres, and frontend is hosted elsewhere."
+    echo "  --all            : Fund accounts and enable all components: anvil, bots, frontend, and ports."
+    echo "  --competition    : Fund accounts and enable anvil, bots and ports. Use this for a trading competition deployment."
+    echo "  --develop        : Fund accounts and enable anvil, bots and ports. Suitable for local development work."
     exit 0
 fi
 
 # Parse all of the arguments
 ## Initialize variables
-DEVNET=false
+ANVIL=false
 PORTS=false
 FRONTEND=false
 POSTGRES=false
 DATA=false
 FUND_ACCOUNTS=false
+COMPETITION=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --all)
-            DEVNET=true
+            ANVIL=true
             FRONTEND=true
             POSTGRES=true
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
             ;;
+        --competition)
+            ANVIL=true
+            PORTS=true
+            DATA=true
+            FUND_ACCOUNTS=true
+            COMPETITION=true
+            ;;
         --develop)
-            DEVNET=true
+            ANVIL=true
             POSTGRES=true
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
             ;;
-        --ec2)
-            DEVNET=true
-            PORTS=true
-            DATA=true
-            FUND_ACCOUNTS=true
-            ;;
-        --devnet)
-            DEVNET=true
+        --anvil)
+            ANVIL=true
             ;;
         --data)
             DATA=true
@@ -85,12 +87,12 @@ echo "# Environment for Docker compose" >>.env
 # experience issues with missing "image" or "build" fields, we always include
 # all of the services in the compose context. We determine which layers are
 # turned on using docker compose profiles.
-devnet_compose="docker-compose.devnet.yaml"
+anvil_compose="docker-compose.anvil.yaml"
 data_compose="docker-compose.data.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$devnet_compose:$data_compose:$frontend_compose:$postgres_compose:"
+full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:"
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
@@ -132,18 +134,27 @@ fi
 # Append the COMPOSE_PROFILES environment variable to the .env file
 echo $full_compose_profiles >>.env
 
-# cat env.common, env.images, and env.ports to the .env file
+# cat env.common and env.ports to the .env file
 echo "" >>.env
 cat env/env.common >> .env
 echo "" >>.env
-cat env/env.images >>.env
-echo "" >>.env
 cat env/env.ports >>.env
 
-# optionally cat env.devnet to .env file if --devnet
-if $DEVNET; then
+# cat env.images to the .env file. We have to manage conflicts between different
+# anvil images here, so we do it manually.
+echo "" >>.env
+cat env/env.images >>.env
+source env/env.images
+if $COMPETITION; then
+    echo "ANVIL_IMAGE=$TESTNET_IMAGE" >>.env
+else
+    echo "ANVIL_IMAGE=$DEVNET_IMAGE" >>.env
+fi
+
+# optionally cat env.anvil to .env file if --anvil
+if $ANVIL; then
     echo "" >>.env
-    cat env/env.devnet >>.env
+    cat env/env.anvil >>.env
 fi
 
 # optionally add an env.frontend to .env file if --frontend
