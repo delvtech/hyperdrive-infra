@@ -15,7 +15,6 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --all            : Fund accounts and enable all components: anvil, bots, frontend, and ports."
     echo "  --competition    : Fund accounts and enable anvil, bots and ports. Use this for a trading competition deployment."
     echo "  --develop        : Fund accounts and enable anvil, bots and ports. Suitable for local development work."
-    echo "  --ec2            : Fund accounts and enable anvil, data, and ports. Need configuration to external postgres, and frontend is hosted elsewhere."
     exit 0
 fi
 
@@ -42,7 +41,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --competition)
             ANVIL=true
-            POSTGRES=true
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
@@ -51,12 +49,6 @@ while [[ $# -gt 0 ]]; do
         --develop)
             ANVIL=true
             POSTGRES=true
-            PORTS=true
-            DATA=true
-            FUND_ACCOUNTS=true
-            ;;
-        --ec2)
-            ANVIL=true
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
