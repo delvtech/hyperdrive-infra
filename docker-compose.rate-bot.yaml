@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  checkpoint-bot:
+  rate-bot:
     image: ${RATE_BOT_IMAGE}
     profiles:
       - "dynamic-rate"
