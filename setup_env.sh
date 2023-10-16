@@ -91,8 +91,12 @@ anvil_compose="docker-compose.anvil.yaml"
 data_compose="docker-compose.data.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
+testnet_compose="docker-compose.testnet.yaml"
 ports_compose="docker-compose.ports.yaml"
 full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:"
+if $COMPETITION; then
+    full_compose_files+="$testnet_compose:"
+fi
 if $PORTS; then
     full_compose_files+="$ports_compose:"
 fi
@@ -112,6 +116,7 @@ frontend_profile="frontend"
 postgres_profile="postgres"
 data_profile="data"
 fund_accounts_profile="fund-accounts"
+competition_profile="competition"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
@@ -124,6 +129,9 @@ if $DATA; then
 fi
 if $FUND_ACCOUNTS; then
     full_compose_profiles+="$fund_accounts_profile,"
+fi
+if $COMPETITION; then
+    full_compose_profiles+="$competition_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
@@ -145,11 +153,6 @@ cat env/env.ports >>.env
 echo "" >>.env
 cat env/env.images >>.env
 source env/env.images
-if $COMPETITION; then
-    echo "ANVIL_IMAGE=$TESTNET_IMAGE" >>.env
-else
-    echo "ANVIL_IMAGE=$DEVNET_IMAGE" >>.env
-fi
 
 # optionally cat env.anvil to .env file if --anvil
 if $ANVIL; then
@@ -168,6 +171,12 @@ fi
 if $POSTGRES || $DATA; then
     echo "" >>.env
     cat env/env.postgres >> .env
+fi
+
+# optionally add an env.time to .env file if --competition
+if $COMPETITION; then
+    echo "" >>.env
+    cat env/env.time >>.env
 fi
 
 echo "Environment filed created at .env"

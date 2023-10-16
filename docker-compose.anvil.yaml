@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   ethereum:
-    image: ${ANVIL_IMAGE}
+    image: ${DEVNET_IMAGE}
     # without --block-time we're in "automine" mode and blocks are mined
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
@@ -16,6 +16,14 @@ services:
     image: curlimages/curl:latest
     command: |
       /bin/sh -c "sleep 2; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' ${RPC_URI}"
+
+  # Set the block timestamp interval
+  timestamp_interval:
+    image: curlimages/curl:latest
+    profiles:
+      - "competition"
+    command: |
+      /bin/sh -c "sleep 2; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_setBlockTimestampInterval\", \"params\":[${BLOCK_TIMESTAMP_INTERVAL}], \"id\":1}' ${RPC_URI}"
 
   # Set account balances
   fund-accounts:
@@ -34,7 +42,9 @@ services:
   checkpoint-bot:
     image: ${ELFPY_IMAGE}
     command: |
-      /bin/sh -c "sleep 1; ARTIFACTS_URI=${ARTIFACTS_URI} RPC_URI=${RPC_URI} python lib/agent0/bin/checkpoint_bot.py"
+      /bin/sh -c "sleep 1; python lib/agent0/bin/checkpoint_bot.py"
+    env_file:
+      - .env
 
 volumes:
   artifacts:
