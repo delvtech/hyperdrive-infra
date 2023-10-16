@@ -5,7 +5,6 @@ services:
     profiles:
       - "dynamic-rate"
     volumes:
-      - ./accounts:/accounts/
       - artifacts:/artifacts/
 
 volumes:
