@@ -15,6 +15,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --all            : Fund accounts and enable all components: anvil, bots, frontend, and ports."
     echo "  --competition    : Fund accounts and enable anvil, bots and ports. Use this for a trading competition deployment."
     echo "  --develop        : Fund accounts and enable anvil, bots and ports. Suitable for local development work."
+    echo "  --dynamic-rate   : Yield source will have a dynamic variable rate."
     exit 0
 fi
 
@@ -27,6 +28,7 @@ POSTGRES=false
 DATA=false
 FUND_ACCOUNTS=false
 COMPETITION=false
+DYNAMIC_RATE=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
@@ -59,6 +61,9 @@ while [[ $# -gt 0 ]]; do
         --data)
             DATA=true
             ;;
+        --dynamic-rate)
+            DYNAMIC_RATE=true
+            ;;
         --postgres)
             POSTGRES=true
             ;;
@@ -89,11 +94,12 @@ echo "# Environment for Docker compose" >>.env
 # turned on using docker compose profiles.
 anvil_compose="docker-compose.anvil.yaml"
 data_compose="docker-compose.data.yaml"
+rate_bot_compose="docker-compose.rate-bot.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 testnet_compose="docker-compose.testnet.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:"
+full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:$rate_bot_compose:"
 if $COMPETITION; then
     full_compose_files+="$testnet_compose:"
 fi
