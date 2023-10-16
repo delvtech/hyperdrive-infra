@@ -4,6 +4,9 @@ services:
     image: ${RATE_BOT_IMAGE}
     profiles:
       - "dynamic-rate"
+    volumes:
+      - ./accounts:/accounts/
+      - artifacts:/artifacts/
 
 volumes:
   artifacts:
