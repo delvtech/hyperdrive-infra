@@ -22,8 +22,6 @@ services:
     image: curlimages/curl:latest
     profiles:
       - "competition"
-    depends_on:
-      - ethereum
     command: |
       /bin/sh -c "sleep 2; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_setBlockTimestampInterval\", \"params\":[${BLOCK_TIMESTAMP_INTERVAL}], \"id\":1}' ${RPC_URI}"
 
