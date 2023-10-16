@@ -49,7 +49,6 @@ We also support shortcuts for common combinations. The most inclusive tag used w
 - `--all` : Fund accounts and enable all components: anvil, data, postgres, bots, frontend, and ports.
 - `--competition`: Fund accounts and enable anvil, bots and ports. Use this for a trading competition deployment.
 - `--develop` : Fund accounts and enable anvil, data, postgres, bots and ports. Suitable for local development work.
-- `--ec2` : Fund accounts and enable anvil, data, and ports. Need configuration to external postgres.
 
 You can also change the tags in `env/env.images` to modify which docker image you build from.
 
