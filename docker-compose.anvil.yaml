@@ -45,7 +45,6 @@ services:
     image: ${ELFPY_IMAGE}
     command: |
       /bin/sh -c "sleep 1; python lib/agent0/bin/checkpoint_bot.py"
-      # TODO parameterize block time and block timestamp interval
     env_file:
       - .env
 
