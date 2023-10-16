@@ -40,6 +40,7 @@ while [[ $# -gt 0 ]]; do
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
+            DYNAMIC_RATE=true
             ;;
         --competition)
             ANVIL=true
@@ -47,6 +48,7 @@ while [[ $# -gt 0 ]]; do
             DATA=true
             FUND_ACCOUNTS=true
             COMPETITION=true
+            DYNAMIC_RATE=true
             ;;
         --develop)
             ANVIL=true
@@ -123,6 +125,7 @@ postgres_profile="postgres"
 data_profile="data"
 fund_accounts_profile="fund-accounts"
 competition_profile="competition"
+dynamic_rate_profile="dynamic-rate"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
@@ -138,6 +141,9 @@ if $FUND_ACCOUNTS; then
 fi
 if $COMPETITION; then
     full_compose_profiles+="$competition_profile,"
+fi
+if $DYNAMIC_RATE; then
+    full_compose_profiles+="$dynamic_rate_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
