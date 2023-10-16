@@ -173,4 +173,10 @@ if $POSTGRES || $DATA; then
     cat env/env.postgres >> .env
 fi
 
+# optionally add an env.time to .env file if --competition
+if $COMPETITION; then
+    echo "" >>.env
+    cat env/env.time >>.env
+fi
+
 echo "Environment filed created at .env"
