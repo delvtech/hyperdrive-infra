@@ -40,8 +40,7 @@ while [[ $# -gt 0 ]]; do
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
-            # to be added once the image is published
-            # DYNAMIC_RATE=true
+            DYNAMIC_RATE=true
             ;;
         --competition)
             ANVIL=true
