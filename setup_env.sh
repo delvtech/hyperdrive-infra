@@ -179,4 +179,10 @@ if $COMPETITION; then
     cat env/env.time >>.env
 fi
 
+# If PORTS=true, replace $ETH_PORT in the generated .env file
+source env/env.ports
+if $PORTS; then
+    sed -i "s/\$ETH_PORT/$ETH_PORT/g" .env
+fi
+
 echo "Environment filed created at .env"
