@@ -32,7 +32,7 @@ echo "$accounts_and_balances" | while read account eth_balance token_balance; do
   curl -X POST --header "Content-Type: application/json" --data "$data" ${RPC_URL}
 
   # Mint base tokens
-  cast send "$base_token" "mint(address,uint256)" "$account" "$token_balance_hex" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY}
+  cast send "$base_token" "mint(address,uint256)" "$account" "$token_balance_hex" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY} --gas-limit 500000
 done
 
 echo "--------------------------------"
