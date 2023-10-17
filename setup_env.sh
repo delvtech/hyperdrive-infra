@@ -15,6 +15,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --all            : Fund accounts and enable all components: anvil, bots, frontend, and ports."
     echo "  --competition    : Fund accounts and enable anvil, bots and ports. Use this for a trading competition deployment."
     echo "  --develop        : Fund accounts and enable anvil, bots and ports. Suitable for local development work."
+    echo "  --dynamic-rate   : Yield source will have a dynamic variable rate."
     exit 0
 fi
 
@@ -27,6 +28,7 @@ POSTGRES=false
 DATA=false
 FUND_ACCOUNTS=false
 COMPETITION=false
+DYNAMIC_RATE=false
 
 ## Loop through the arguments
 while [[ $# -gt 0 ]]; do
@@ -38,6 +40,8 @@ while [[ $# -gt 0 ]]; do
             PORTS=true
             DATA=true
             FUND_ACCOUNTS=true
+            # to be added once the image is published
+            # DYNAMIC_RATE=true
             ;;
         --competition)
             ANVIL=true
@@ -45,6 +49,7 @@ while [[ $# -gt 0 ]]; do
             DATA=true
             FUND_ACCOUNTS=true
             COMPETITION=true
+            DYNAMIC_RATE=true
             ;;
         --develop)
             ANVIL=true
@@ -58,6 +63,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --data)
             DATA=true
+            ;;
+        --dynamic-rate)
+            DYNAMIC_RATE=true
             ;;
         --postgres)
             POSTGRES=true
@@ -89,11 +97,12 @@ echo "# Environment for Docker compose" >>.env
 # turned on using docker compose profiles.
 anvil_compose="docker-compose.anvil.yaml"
 data_compose="docker-compose.data.yaml"
+rate_bot_compose="docker-compose.rate-bot.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 testnet_compose="docker-compose.testnet.yaml"
 ports_compose="docker-compose.ports.yaml"
-full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:"
+full_compose_files="COMPOSE_FILE=$anvil_compose:$data_compose:$frontend_compose:$postgres_compose:$rate_bot_compose:"
 if $COMPETITION; then
     full_compose_files+="$testnet_compose:"
 fi
@@ -117,6 +126,7 @@ postgres_profile="postgres"
 data_profile="data"
 fund_accounts_profile="fund-accounts"
 competition_profile="competition"
+dynamic_rate_profile="dynamic-rate"
 full_compose_profiles="COMPOSE_PROFILES="
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
@@ -132,6 +142,9 @@ if $FUND_ACCOUNTS; then
 fi
 if $COMPETITION; then
     full_compose_profiles+="$competition_profile,"
+fi
+if $DYNAMIC_RATE; then
+    full_compose_profiles+="$dynamic_rate_profile,"
 fi
 # Check if "," is at the end of the string
 if [[ $full_compose_profiles == *"," ]]; then
