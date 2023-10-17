@@ -20,7 +20,7 @@ accounts_and_balances=$(jq -r 'to_entries|map("\(.key) \(.value.eth) \(.value.to
 base_token=$(jq -r '.baseToken' /artifacts/addresses.json)
 
 # Set the balance for each account
-echo "$accounts_and_balances" | while read account eth_balance token_balance; do
+while read -r account eth_balance token_balance; do
   # Convert balances to wei as a hex string
   eth_balance_hex="0x$(echo "obase=16; scale=0; $eth_balance * 10^18 / 1" | bc)"
   token_balance_hex="0x$(echo "obase=16; scale=0; $token_balance * 10^18 / 1" | bc)"
@@ -33,7 +33,12 @@ echo "$accounts_and_balances" | while read account eth_balance token_balance; do
 
   # Mint base tokens
   cast send "$base_token" "mint(address,uint256)" "$account" "$token_balance_hex" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY} --gas-limit 500000
-done
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+done <<EOF
+$accounts_and_balances
+EOF
 
 echo "--------------------------------"
 echo " ACCOUNTS FUNDED SUCCESSFULLY!! "
