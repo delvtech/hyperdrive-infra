@@ -179,10 +179,37 @@ if $COMPETITION; then
     cat env/env.time >>.env
 fi
 
-# If PORTS=true, replace $ETH_PORT in the generated .env file
-source env/env.ports
+# source: https://chat.openai.com/share/ebaf2531-b46c-4aed-aaa6-1e1400a5fd8f
 if $PORTS; then
-    sed -i "s/\$ETH_PORT/$ETH_PORT/g" .env
+    while IFS='=' read -r var value; do
+        if [[ ! $var =~ ^# ]]; then
+            changed=false
+            declared_change=false
+            temp_file=$(mktemp)
+            while IFS= read -r line; do
+                original_line="$line"
+                # Check if the line contains the variable but doesn't start with it
+                if [[ "$line" == *"$var"* ]] && [[ ! "$line" == "$var="* ]]; then
+                    line="${line//$var/$value}"  # Replace all occurrences of $var with $value
+                    if [ "$original_line" != "$line" ]; then
+                        if [ "$declared_change" = false ]; then
+                            echo "Setting $var to $value:"
+                            declared_change=true
+                        fi
+                        echo " $original_line"
+                        echo "  -> $line"
+                        changed=true  # Add this line
+                    fi
+                fi
+                echo "$line" >> "$temp_file"
+            done < .env
+            if [ "$changed" = true ]; then
+                mv "$temp_file" .env  # Replace the original .env file with the modified one
+            else
+                rm "$temp_file"  # Remove the temporary file if no changes were made
+            fi
+        fi
+    done < env/env.ports
 fi
 
 echo "Environment filed created at .env"
