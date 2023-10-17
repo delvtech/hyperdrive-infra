@@ -111,5 +111,9 @@
   "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720": {
     "eth": 500,
     "tokens": 500
+  },
+  "0x2C4F64C3BE604E7Ae00fd822CE5FC3131F30C3F0": {
+    "eth": 500,
+    "tokens": 500
   }
 }
