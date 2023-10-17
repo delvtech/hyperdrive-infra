@@ -20,3 +20,9 @@ jobs:
     with:
       name: fund-accounts
       context: ./images/fund-accounts
+
+  push-rate-bot-image:
+    uses: ./.github/workflows/publish-image.yml
+    with:
+      name: rate-bot
+      context: ./images/rate-bot
