@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  fuzz:
+    image: ${ELFPY_IMAGE}
+    profiles:
+      - "fuzz"
+    working_dir: /app/
+    command: /bin/sh -c "DEVELOP=true python lib/agent0/bin/fuzz_bots.py"
+    env_file:
+      - .env
+    #volumes:
+    #  - .crash_report:/app
