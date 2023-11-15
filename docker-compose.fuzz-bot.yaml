@@ -8,5 +8,5 @@ services:
     command: /bin/sh -c "DEVELOP=true python lib/agent0/bin/fuzz_bots.py"
     env_file:
       - .env
-    #volumes:
-    #  - .crash_report:/app
+    volumes:
+      - .crash_report:/app/.crash_report
