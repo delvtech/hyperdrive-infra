@@ -40,7 +40,7 @@ services:
       - artifacts:/var/www/artifacts/
 
   checkpoint-bot:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     command: |
       /bin/sh -c "sleep 1; python lib/agent0/bin/checkpoint_bot.py"
     env_file:
