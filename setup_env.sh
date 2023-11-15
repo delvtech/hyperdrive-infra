@@ -20,7 +20,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
     echo "  --dynamic-rate   : Yield source will have a dynamic variable rate."
-    echo "  --fuzzbot        : Runs a set of random trade bots."
+    echo "  --fuzzbot        : Runs fuzzbots on the chain."
     exit 0
 fi
 
