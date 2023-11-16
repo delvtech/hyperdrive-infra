@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   data:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -11,7 +11,7 @@ services:
       - .env
 
   analysis:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -20,7 +20,7 @@ services:
       - .env
 
   database-api-server:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -29,7 +29,7 @@ services:
       - .env
 
   dashboard:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     profiles:
       - "data"
     working_dir: /app/
@@ -48,7 +48,7 @@ services:
 
   # Set initial username mappings
   init-usernames:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     profiles:
       - "data"
     working_dir: /app/

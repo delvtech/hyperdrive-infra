@@ -21,7 +21,7 @@ services:
   timestamp_interval:
     image: curlimages/curl:latest
     profiles:
-      - "competition"
+      - "blocktime"
     command: |
       /bin/sh -c "sleep 5; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_setBlockTimestampInterval\", \"params\":[${BLOCK_TIMESTAMP_INTERVAL}], \"id\":1}' ${RPC_URI}"
 
@@ -40,7 +40,7 @@ services:
       - artifacts:/var/www/artifacts/
 
   checkpoint-bot:
-    image: ${ELFPY_IMAGE}
+    image: ${AGENT0_IMAGE}
     command: |
       /bin/sh -c "sleep 1; python lib/agent0/bin/checkpoint_bot.py"
     env_file:

@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+  ethereum:
+    # This file overwrites docker-compose.anvil.yaml
+    command: |
+      'anvil --load-state ./data --block-time ${BLOCK_TIME} --host 0.0.0.0 --code-size-limit 9999999999 --chain-id ${CHAIN_ID}'
