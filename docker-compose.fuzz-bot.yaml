@@ -10,3 +10,14 @@ services:
       - .env
     volumes:
       - .crash_report:/app/.crash_report
+
+  fuzz-invariant-check:
+    image: ${AGENT0_IMAGE}
+    profiles:
+      - "fuzz"
+    working_dir: /app/
+    command: /bin/sh -c "python lib/agent0/bin/fuzz_bot_invariant_checks.py"
+    env_file:
+      - .env
+    volumes:
+      - .crash_report:/app/.crash_report
