@@ -55,7 +55,6 @@ for (const [address, { eth, tokens }] of Object.entries(accounts)) {
     address: addresses.baseToken,
     functionName: 'mint',
     args: [address, tokenBalance],
-    // gas: 51176n,
   });
 }
 
