@@ -1,3 +1,4 @@
 {
-  "dotenv.enableAutocloaking": false
+  "dotenv.enableAutocloaking": false,
+  "prettier.singleQuote": false
 }
