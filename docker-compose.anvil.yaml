@@ -33,6 +33,8 @@ services:
     volumes:
       - ./accounts:/accounts/
       - artifacts:/artifacts/
+    env_file:
+      - .env
 
   artifacts:
     image: ${ARTIFACTS_IMAGE}

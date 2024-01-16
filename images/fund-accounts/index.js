@@ -4,9 +4,9 @@ import { foundry } from 'viem/chains';
 import accounts from '/accounts/balances.json' assert { type: 'json' };
 import addresses from '/artifacts/addresses.json' assert { type: 'json' };
 
-const walletKey = process.env.PRIVATE_KEY;
+const walletKey = process.env.ADMIN_PRIVATE_KEY;
 const chainId = process.env.CHAIN_ID;
-const rpcUrl = process.env.RPC_URL;
+const rpcUrl = process.env.RPC_URI;
 
 const account = privateKeyToAccount(walletKey);
 const chain = {
@@ -14,6 +14,10 @@ const chain = {
   id: Number(chainId),
 };
 const transport = http(rpcUrl);
+
+console.log('account', account);
+console.log('chainId', chainId);
+console.log('rpcUrl', rpcUrl);
 
 const abi = [
   {
