@@ -6,7 +6,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/run_acquire_data.py"
+    command: /bin/sh -c "python scripts/run_acquire_data.py"
     env_file:
       - .env
 
@@ -15,7 +15,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/run_data_analysis.py"
+    command: /bin/sh -c "python scripts/run_data_analysis.py"
     env_file:
       - .env
 
@@ -24,7 +24,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/run_api_server.py"
+    command: /bin/sh -c "python scripts/run_api_server.py"
     env_file:
       - .env
 
@@ -33,7 +33,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "streamlit run lib/chainsync/bin/streamlit/Dashboard.py \
+    command: /bin/sh -c "streamlit run src/agent0/chainsync/streamlit/Dashboard.py \
                --server.port=8501 \
                --server.headless true \
                --server.fileWatcherType=none \
@@ -52,7 +52,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python lib/chainsync/bin/update_usernames.py"
+    command: /bin/sh -c "python scripts/update_usernames.py"
     env_file:
       - .env
 

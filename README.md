@@ -75,7 +75,7 @@ Run `docker compose down -v`. The `-v` ensures that storage volumes are deleted.
 
 ## Fuzz agents
 
-We provide a method for launching [agents making random trades](https://github.com/delvtech/elf-simulations/blob/main/lib/agent0/bin/fuzz_bots.py) on Hyperdrive along with the rest of the 
+We provide a method for launching [agents making random trades](https://github.com/delvtech/agent0/blob/main/scripts/fuzz_bots.py) on Hyperdrive along with the rest of the 
 infrastructure by providing the `--fuzz` argument to `setup_env.sh`. These agents also support detailed 
 crash reports in the event that an error is detected, located in the `.crash_report` directory. By default,
 the chain will be paused when a crash happens, freezing the anvil state for further analysis.

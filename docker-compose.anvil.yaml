@@ -44,7 +44,7 @@ services:
   checkpoint-bot:
     image: ${AGENT0_IMAGE}
     command: |
-      /bin/sh -c "sleep 1; python lib/agent0/bin/checkpoint_bot.py"
+      /bin/sh -c "sleep 1; python scripts/checkpoint_bot.py"
     env_file:
       - .env
 
