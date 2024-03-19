@@ -1,0 +1,6 @@
+{
+  "baseToken": "0x5a17f92aaaef087c72bb810f314ca15e18bc3ea3",
+  "erc4626Hyperdrive": "0xe9dcbe59a774e5fb53e2064dda89971394c70eeb",
+  "stethHyperdrive": "0xa0d47f5f6e449e967ea53e66096a630fe16f6b3f",
+  "factory": "0x8b035e50565ed7de0ba828f073c04392335a6794"
+}
