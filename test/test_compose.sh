@@ -1,5 +1,7 @@
 dirname=$(basename $(pwd))
 
+docker ps --all
+
 # Runs before exiting regardless of the reason (error or not).
 trap 'echo "Taking down containers..."; docker compose down -v' EXIT
 
