@@ -71,7 +71,6 @@ while [[ $# -gt 0 ]]; do
             DATA=true
             POSTGRES=true
             PORTS=true
-            DYNAMIC_RATE=true
             FUZZBOT=true
             ;;
         --anvil)
