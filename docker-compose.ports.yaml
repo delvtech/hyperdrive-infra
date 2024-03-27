@@ -13,10 +13,6 @@ services:
     ports:
       - ${UI_PORT}:5173
 
-  database-api-server:
-    ports:
-      - ${USERNAME_REGISTER_PORT}:5002
-
   dashboard:
     ports:
       - ${DASHBOARD_PORT}:8501
