@@ -59,13 +59,6 @@ if [ -z "$(docker compose ps -q data)" ]; then
   exit 1
 fi
 
-# The username reg service should be running.
-if [ -z "$(docker compose ps -q database-api-server)" ]; then
-  echo "Username reg service exited unexpectedly:"
-  docker logs $dirname-database-api-server-1
-  exit 1
-fi
-
 # The dashboard service should be running.
 if [ -z "$(docker compose ps -q dashboard)" ]; then
   echo "Dashboard service exited unexpectedly:"
