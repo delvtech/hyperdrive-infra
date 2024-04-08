@@ -12,17 +12,6 @@ services:
     volumes:
       - .crash_report:/app/.crash_report
 
-  fuzz-invariant-check-erc4626:
-    image: ${AGENT0_IMAGE}
-    profiles:
-      - "fuzz"
-    working_dir: /app/
-    command: /bin/sh -c "python scripts/fuzz_bot_invariant_checks.py --pool erc4626_hyperdrive"
-    env_file:
-      - .env
-    volumes:
-      - .crash_report:/app/.crash_report
-
   fuzz-steth:
     image: ${AGENT0_IMAGE}
     profiles:
@@ -34,12 +23,24 @@ services:
     volumes:
       - .crash_report:/app/.crash_report
 
+  fuzz-invariant-check-erc4626:
+    image: ${AGENT0_IMAGE}
+    profiles:
+      - "fuzz"
+    working_dir: /app/
+    command: /bin/sh -c "sleep 1; python scripts/fuzz_bot_invariant_checks.py --pool erc4626_hyperdrive"
+    env_file:
+      - .env
+    volumes:
+      - .crash_report:/app/.crash_report
+
+
   fuzz-invariant-check-steth:
     image: ${AGENT0_IMAGE}
     profiles:
       - "fuzz"
     working_dir: /app/
-    command: /bin/sh -c "python scripts/fuzz_bot_invariant_checks.py --pool steth_hyperdrive"
+    command: /bin/sh -c "sleep 1; python scripts/fuzz_bot_invariant_checks.py --pool steth_hyperdrive"
     env_file:
       - .env
     volumes:
