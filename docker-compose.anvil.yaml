@@ -41,10 +41,18 @@ services:
     volumes:
       - artifacts:/var/www/artifacts/
 
-  checkpoint-bot:
+  # TODO make single container for all pools
+  checkpoint-bot-erc4626:
     image: ${AGENT0_IMAGE}
     command: |
-      /bin/sh -c "sleep 1; python scripts/checkpoint_bot.py"
+      /bin/sh -c "sleep 1; python scripts/checkpoint_bot.py --pool erc4626_hyperdrive --fund"
+    env_file:
+      - .env
+
+  checkpoint-bot-steth:
+    image: ${AGENT0_IMAGE}
+    command: |
+      /bin/sh -c "sleep 1; python scripts/checkpoint_bot.py --pool steth_hyperdrive --fund"
     env_file:
       - .env
 

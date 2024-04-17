@@ -39,9 +39,15 @@ if [ -z "$(docker compose ps -q artifacts)" ]; then
 fi
 
 # The checkpoint-bot service should be running.
-if [ -z "$(docker compose ps -q checkpoint-bot)" ]; then
+if [ -z "$(docker compose ps -q checkpoint-bot-erc4626)" ]; then
   echo "Checkpoint bot service exited unexpectedly:"
-  docker logs $dirname-checkpoint-bot-1
+  docker logs $dirname-checkpoint-bot-erc4626-1
+  exit 1
+fi
+
+if [ -z "$(docker compose ps -q checkpoint-bot-steth)" ]; then
+  echo "Checkpoint bot service exited unexpectedly:"
+  docker logs $dirname-checkpoint-bot-steth-1
   exit 1
 fi
 
