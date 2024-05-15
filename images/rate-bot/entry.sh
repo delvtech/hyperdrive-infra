@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 # Wait until the Ethereum node is ready
 while true; do
@@ -9,4 +10,6 @@ while true; do
   sleep 2
 done
 
-watch -n ${WAIT_TIME} ./rate_daddy.sh
+SCRIPT_DIR="$(dirname $0)"
+
+watch -n ${WAIT_TIME} ${SCRIPT_DIR}/rate_daddy.sh
