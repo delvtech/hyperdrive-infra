@@ -17,6 +17,7 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --postgres       : Runs a postgres db container for storing data."
     echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
     echo "  --service-bots   : Runs checkpoint bot and invariance check bots on the chain."
+    echo "  --random-bots    : Runs random bots on the chain."
     echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
     echo "  --rate-bot       : Yield source will have a dynamic variable rate."
@@ -33,6 +34,7 @@ POSTGRES=false
 DATA=false
 PORTS=false
 SERVICE_BOTS=false
+RANDOM_BOTS=false
 RATE_BOT=false
 FUND_ACCOUNTS=false
 
@@ -42,13 +44,14 @@ while [[ $# -gt 0 ]]; do
         # Flag groups
         --all)
             ANVIL=true
-            # BLOCKTIME=true
-            # TODO add in testnet image here
+            # Don't run blocktime here, we want chain to be in fast mode
+            # Don't run testnet image here since random bots need to be able to mint
             FRONTEND=true
             POSTGRES=true
             DATA=true
             PORTS=true
             SERVICE_BOTS=true
+            RANDOM_BOTS=true
             RATE_BOT=true
             FUND_ACCOUNTS=true
             ;;
@@ -112,7 +115,7 @@ testnet_compose="docker-compose.testnet.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 data_compose="docker-compose.data.yaml"
-service_bots_compose="docker-compose.service-bots.yaml"
+service_bots_compose="docker-compose.agent0-bots.yaml"
 ports_compose="docker-compose.ports.yaml"
 
 # We default to using profiles to control which services are turned on.
@@ -144,6 +147,7 @@ frontend_profile="frontend"
 postgres_profile="postgres"
 data_profile="data"
 service_bots_profile="service-bots"
+random_bots_profile="random-bots"
 rate_bot_profile="rate-bot"
 fund_accounts_profile="fund-accounts"
 full_compose_profiles="COMPOSE_PROFILES="
@@ -161,6 +165,9 @@ if $DATA; then
 fi
 if $SERVICE_BOTS; then
     full_compose_profiles+="$service_bots_profile,"
+fi
+if $RANDOM_BOTS; then
+    full_compose_profiles+="$random_bots_profile,"
 fi
 if $RATE_BOT; then
     full_compose_profiles+="$rate_bot_profile,"
@@ -210,7 +217,7 @@ fi
 # optionally add an env.frontend to .env file if --postgres or --data
 # POSTGRES uses these flags to launch postgres. 
 # All agent0 images uses these flags to connect
-if $POSTGRES || $DATA || $SERVICE_BOTS; then
+if $POSTGRES || $DATA || $SERVICE_BOTS || $RANDOM_BOTS || $RATE_BOT; then
     echo "" >>.env
     cat env/env.postgres >> .env
 fi
