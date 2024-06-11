@@ -1,0 +1,29 @@
+services:
+  checkpoint-bot:
+    image: ${AGENT0_IMAGE}
+    profiles:
+      - "service-bots" 
+    command: |
+      /bin/sh -c "sleep 1; python scripts/checkpoint_bots.py --pool-check-sleep-blocks 30 --infra"
+    env_file:
+      - .env
+    
+  invariance-check-bot:
+    image: ${AGENT0_IMAGE}
+    profiles:
+      - "service-bots" 
+    command: |
+      /bin/sh -c "sleep 2; python scripts/fuzz_bot_invariant_checks.py --pool-check-sleep-blocks 30 --infra"
+    env_file:
+      - .env
+  
+  # TODO rewrite rate bot in agent0
+  rate-bot:
+    image: ${RATE_BOT_IMAGE}
+    profiles:
+      - "rate-bot"
+    volumes:
+      - artifacts:/artifacts/
+
+volumes:
+  artifacts:

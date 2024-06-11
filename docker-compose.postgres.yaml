@@ -1,7 +1,4 @@
-version: '3.9'
-
 services:
-
   db:
     image: postgres
     profiles:
@@ -10,4 +7,4 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
-      POSTGRES_DB: postgres_db
+      POSTGRES_DB: agent0_db
