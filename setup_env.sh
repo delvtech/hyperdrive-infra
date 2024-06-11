@@ -16,8 +16,8 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --frontend       : Build the frontend container."
     echo "  --postgres       : Runs a postgres db container for storing data."
     echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
-    echo "  --service-bots   : Runs checkpoint bot and invariance check bots on the chain."
-    echo "  --random-bots    : Runs random bots on the chain."
+    echo "  --service-bot   : Runs checkpoint bot and invariance check bots on the chain."
+    echo "  --random-bot    : Runs random bots on the chain."
     echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
     echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
     echo "  --rate-bot       : Yield source will have a dynamic variable rate."
@@ -33,8 +33,8 @@ FRONTEND=false
 POSTGRES=false
 DATA=false
 PORTS=false
-SERVICE_BOTS=false
-RANDOM_BOTS=false
+SERVICE_BOT=false
+RANDOM_BOT=false
 RATE_BOT=false
 FUND_ACCOUNTS=false
 
@@ -50,8 +50,8 @@ while [[ $# -gt 0 ]]; do
             POSTGRES=true
             DATA=true
             PORTS=true
-            SERVICE_BOTS=true
-            RANDOM_BOTS=true
+            SERVICE_BOT=true
+            RANDOM_BOT=true
             RATE_BOT=true
             FUND_ACCOUNTS=true
             ;;
@@ -84,8 +84,8 @@ while [[ $# -gt 0 ]]; do
         --ports)
             PORTS=true
             ;;
-        --service-bots)
-            SERVICE_BOTS=true
+        --service-bot)
+            SERVICE_BOT=true
             ;;
         --rate-bot)
             RATE_BOT=true
@@ -115,11 +115,11 @@ testnet_compose="docker-compose.testnet.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
 data_compose="docker-compose.data.yaml"
-service_bots_compose="docker-compose.agent0-bots.yaml"
+service_bot_compose="docker-compose.agent0-bots.yaml"
 ports_compose="docker-compose.ports.yaml"
 
 # We default to using profiles to control which services are turned on.
-full_compose_files="COMPOSE_FILE=$anvil_compose:$frontend_compose:$postgres_compose:$data_compose:$service_bots_compose:"
+full_compose_files="COMPOSE_FILE=$anvil_compose:$frontend_compose:$postgres_compose:$data_compose:$service_bot_compose:"
 # We only add controls here if these compose files update existing services.
 if $BLOCKTIME; then
     full_compose_files+="$blocktime_compose:"
@@ -146,8 +146,8 @@ blocktime_profile="blocktime"
 frontend_profile="frontend"
 postgres_profile="postgres"
 data_profile="data"
-service_bots_profile="service-bots"
-random_bots_profile="random-bots"
+service_bot_profile="service-bot"
+random_bot_profile="random-bot"
 rate_bot_profile="rate-bot"
 fund_accounts_profile="fund-accounts"
 full_compose_profiles="COMPOSE_PROFILES="
@@ -163,11 +163,11 @@ fi
 if $DATA; then
     full_compose_profiles+="$data_profile,"
 fi
-if $SERVICE_BOTS; then
-    full_compose_profiles+="$service_bots_profile,"
+if $SERVICE_BOT; then
+    full_compose_profiles+="$service_bot_profile,"
 fi
-if $RANDOM_BOTS; then
-    full_compose_profiles+="$random_bots_profile,"
+if $RANDOM_BOT; then
+    full_compose_profiles+="$random_bot_profile,"
 fi
 if $RATE_BOT; then
     full_compose_profiles+="$rate_bot_profile,"
@@ -217,7 +217,7 @@ fi
 # optionally add an env.frontend to .env file if --postgres or --data
 # POSTGRES uses these flags to launch postgres. 
 # All agent0 images uses these flags to connect
-if $POSTGRES || $DATA || $SERVICE_BOTS || $RANDOM_BOTS || $RATE_BOT; then
+if $POSTGRES || $DATA || $SERVICE_BOT || $RANDOM_BOT || $RATE_BOT; then
     echo "" >>.env
     cat env/env.postgres >> .env
 fi
