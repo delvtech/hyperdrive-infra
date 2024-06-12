@@ -38,23 +38,10 @@ if [ -z "$(docker compose ps -q artifacts)" ]; then
   exit 1
 fi
 
-# The checkpoint-bot service should be running.
-if [ -z "$(docker compose ps -q checkpoint-bot-erc4626)" ]; then
-  echo "Checkpoint bot service exited unexpectedly:"
-  docker logs $dirname-checkpoint-bot-erc4626-1
-  exit 1
-fi
-
-if [ -z "$(docker compose ps -q checkpoint-bot-steth)" ]; then
-  echo "Checkpoint bot service exited unexpectedly:"
-  docker logs $dirname-checkpoint-bot-steth-1
-  exit 1
-fi
-
-# The rate-bot service should be running.
-if [ -z "$(docker compose ps -q rate-bot)" ]; then
-  echo "Rate bot service exited unexpectedly:"
-  docker logs $dirname-rate-bot-1
+# The frontend service should be running.
+if [ -z "$(docker compose ps -q frontend)" ]; then
+  echo "Frontend service exited unexpectedly:"
+  docker logs $dirname-frontend-1
   exit 1
 fi
 
@@ -62,6 +49,13 @@ fi
 if [ -z "$(docker compose ps -q data)" ]; then
   echo "Data service exited unexpectedly:"
   docker logs $dirname-data-1
+  exit 1
+fi
+
+# The analysis service should be running.
+if [ -z "$(docker compose ps -q analysis)" ]; then
+  echo "Analysis service exited unexpectedly:"
+  docker logs $dirname-analysis-1
   exit 1
 fi
 
@@ -79,11 +73,33 @@ if [ -z "$(docker compose ps -q db)" ]; then
   exit 1
 fi
 
-# The frontend service should be running.
-if [ -z "$(docker compose ps -q frontend)" ]; then
-  echo "Frontend service exited unexpectedly:"
-  docker logs $dirname-frontend-1
+# The checkpoint-bot service should be running.
+if [ -z "$(docker compose ps -q checkpoint-bot)" ]; then
+  echo "Checkpoint bot service exited unexpectedly:"
+  docker logs $dirname-checkpoint-bot-1
   exit 1
 fi
+
+# The rate-bot service should be running.
+if [ -z "$(docker compose ps -q rate-bot)" ]; then
+  echo "Rate bot service exited unexpectedly:"
+  docker logs $dirname-rate-bot-1
+  exit 1
+fi
+
+# The invariance-check-bot service should be running.
+if [ -z "$(docker compose ps -q invariance-check-bot)" ]; then
+  echo "Invariance check bot service exited unexpectedly:"
+  docker logs $dirname-invariance-check-bot-1
+  exit 1
+fi
+
+# The random-bot service should be running.
+if [ -z "$(docker compose ps -q random-bot)" ]; then
+  echo "Random bot service exited unexpectedly:"
+  docker logs $dirname-random-bot-1
+  exit 1
+fi
+
 
 echo "Containers ran successfully!"

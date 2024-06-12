@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   ethereum:
     # This file overwrites docker-compose.anvil.yaml

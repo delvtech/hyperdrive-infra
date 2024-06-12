@@ -1,4 +1,3 @@
-version: "3.9"
 services:
 
   data:
@@ -15,7 +14,7 @@ services:
     profiles:
       - "data"
     working_dir: /app/
-    command: /bin/sh -c "python scripts/run_data_analysis.py"
+    command: /bin/sh -c "python scripts/run_analyze_data.py"
     env_file:
       - .env
 
@@ -36,16 +35,6 @@ services:
     mem_limit: "1g"
     mem_reservation: "1g"
     restart: always
-
-  # Set initial username mappings
-  init-usernames:
-    image: ${AGENT0_IMAGE}
-    profiles:
-      - "data"
-    working_dir: /app/
-    command: /bin/sh -c "python scripts/update_usernames.py"
-    env_file:
-      - .env
 
 volumes:
   artifacts:
