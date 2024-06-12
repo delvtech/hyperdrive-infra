@@ -1,6 +1,8 @@
 services:
   ethereum:
     image: ${DEVNET_IMAGE}
+    profiles:
+      - "anvil"
     # without --block-time we're in "automine" mode and blocks are mined
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
@@ -13,8 +15,17 @@ services:
   # read calls.
   mine:
     image: curlimages/curl:latest
+    profiles:
+      - "anvil"
     command: |
       /bin/sh -c "sleep 2; curl -X POST -H \"Content-Type: application/json\" --data '{\"jsonrpc\":\"2.0\", \"method\":\"anvil_mine\", \"params\":[], \"id\":1}' ${RPC_URI}"
+
+  artifacts:
+    image: ${ARTIFACTS_IMAGE}
+    profiles:
+      - "anvil"
+    volumes:
+      - artifacts:/var/www/artifacts/
 
   # Set the block timestamp interval
   timestamp_interval:
@@ -35,10 +46,6 @@ services:
     env_file:
       - .env
 
-  artifacts:
-    image: ${ARTIFACTS_IMAGE}
-    volumes:
-      - artifacts:/var/www/artifacts/
 
 volumes:
   artifacts:
