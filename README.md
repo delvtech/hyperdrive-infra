@@ -10,6 +10,7 @@ compose app. The compose app is composed of several services:
 - artifacts: A file server that serves up artifacts about the Hyperdrive deployment.
 - frontend: A full monorepo with a trading UI and supporting packages
 - data: A service that gathers data from the chain and deploys a data dashboard.
+- bots: Bot services for running auto trades on a chain.
 
 ## Setup
 
@@ -44,19 +45,19 @@ To select an environment, run `sh setup_env.sh` with one or more of the followin
 - `--blocktime` : Sets the anvil node to run in blocktime mode.
 - `--testnet` : Uses the testnet hyperdrive image with restricted mint access.
 - `--frontend` : Build the frontend container.
-- `--data` : Runs the data framework, queries the chain, writes to postgres, and deploys the dashboard.
 - `--postgres` : Launches a local postgres server for the data pipeline.
+- `--data` : Runs the data framework, querying the chain and writing to postgres.
+- `--service-bot` : Runs checkpoint bot and invariance check bots on the chain."
+- `--random-bot` : Runs random bots on the chain.
 - `--ports` : Expose docker images to your machine, as specified in `env/env.ports`.
 - `--fund-accounts` : Fund accounts from `/accounts/balances.json`.
-- `--dynamic-rate` : Yield source will have a dynamic variable rate.
-- `--fuzzbot` : Runs fuzzbots on the chain.
+- `--rate-bot` : Yield source will have a dynamic variable rate.
 
 We also support shortcuts for common combinations. The most inclusive tag used will take priority.
 
 - `--all` : Fund accounts and enable all components: anvil, data, postgres, frontend, and ports.
-- `--competition` : Fund accounts and enable anvil on block time with testnet image, data (without postgres), and ports. Use this for a trading competition deployment.
 - `--develop` : Fund accounts and enable anvil, data, and ports. Suitable for local development work.
-- `--fuzz` : Enable anvil on block time, data, and ports. Runs fuzzbots and outputs crash reports. See [Fuzz Agents](#fuzz-agents) for more details.
+- `--remote-service-bots`: Runs service bots on a remote chain. See [Service Bots](./service-bots.md) for more details.
 
 You can also change the tags in `env/env.images` to modify which docker image you build from.
 
@@ -76,12 +77,6 @@ See live logs with `docker logs CONTAINER_NAME -f`.
 
 Run `docker compose down -v`. The `-v` ensures that storage volumes are deleted.
 
-## Fuzz agents
-
-We provide a method for launching [agents making random trades](https://github.com/delvtech/agent0/blob/main/scripts/fuzz_bots.py) on Hyperdrive along with the rest of the 
-infrastructure by providing the `--fuzz` argument to `setup_env.sh`. These agents also support detailed 
-crash reports in the event that an error is detected, located in the `.crash_report` directory. By default,
-the chain will be paused when a crash happens, freezing the anvil state for further analysis.
 
 ## Disclaimer
 
