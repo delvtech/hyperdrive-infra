@@ -3,6 +3,7 @@ services:
     image: ${AGENT0_IMAGE}
     profiles:
       - "service-bot" 
+    restart: always
     command: |
       /bin/sh -c "sleep 1; python scripts/checkpoint_bots.py --pool-check-sleep-blocks 30 --infra"
     env_file:
@@ -12,6 +13,7 @@ services:
     image: ${AGENT0_IMAGE}
     profiles:
       - "service-bot" 
+    restart: always
     command: |
       /bin/sh -c "sleep 1; python scripts/invariant_checks.py --pool-check-sleep-blocks 30 --infra"
     env_file:
