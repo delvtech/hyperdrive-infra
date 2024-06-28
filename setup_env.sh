@@ -7,20 +7,21 @@
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "Usage: ./setup_env.sh [flags]"
     echo "Flag Groups:"
-    echo "  --all            : Fund accounts and enable all components: anvil, data, postgres, frontend, and ports."
-    echo "  --develop        : Fund accounts and enable anvil, data, and ports. Suitable for local development work."
+    echo "  --all                  : Fund accounts and enable all components."
+    echo "  --develop              : Fund accounts and enable anvil, data, and ports. Suitable for local development work."
+    echo "  --remote-service-bots  : Runs service bots on a remote chain."
     echo "Flags:"
-    echo "  --anvil          : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
-    echo "  --blocktime      : Sets the anvil node to run in blocktime mode."
-    echo "  --testnet        : Uses the testnet hyperdrive image with restricted mint access."
-    echo "  --frontend       : Build the frontend container."
-    echo "  --postgres       : Runs a postgres db container for storing data."
-    echo "  --data           : Runs the data framework, querying the chain and writing to postgres."
-    echo "  --service-bot   : Runs checkpoint bot and invariance check bots on the chain."
-    echo "  --random-bot    : Runs random bots on the chain."
-    echo "  --ports          : Expose docker images to your machine, as specified in env/env.ports."
-    echo "  --fund-accounts  : Fund accounts from /accounts/balances.json."
-    echo "  --rate-bot       : Yield source will have a dynamic variable rate."
+    echo "  --anvil                : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
+    echo "  --blocktime            : Sets the anvil node to run in blocktime mode."
+    echo "  --testnet              : Uses the testnet hyperdrive image with restricted mint access."
+    echo "  --frontend             : Build the frontend container."
+    echo "  --postgres             : Runs a postgres db container for storing data."
+    echo "  --data                 : Runs the data framework, querying the chain and writing to postgres."
+    echo "  --service-bot          : Runs checkpoint bot and invariance check bots on the chain."
+    echo "  --random-bot           : Runs random bots on the chain."
+    echo "  --ports                : Expose docker images to your machine, as specified in env/env.ports."
+    echo "  --fund-accounts        : Fund accounts from /accounts/balances.json."
+    echo "  --rate-bot             : Yield source will have a dynamic variable rate."
     exit 0
 fi
 
@@ -61,6 +62,11 @@ while [[ $# -gt 0 ]]; do
             DATA=true
             PORTS=true
             FUND_ACCOUNTS=true
+            ;;
+        --remote-service-bots)
+            POSTGRES=true
+            PORTS=true
+            SERVICE_BOT=true
             ;;
         # Flags
         --anvil)
@@ -142,6 +148,7 @@ echo $full_compose_files >>.env
 
 # Set up the COMPOSE_PROFILES environment variable. This toggles which layers
 # should be started.
+anvil_profile="anvil"
 blocktime_profile="blocktime"
 frontend_profile="frontend"
 postgres_profile="postgres"
@@ -151,6 +158,9 @@ random_bot_profile="random-bot"
 rate_bot_profile="rate-bot"
 fund_accounts_profile="fund-accounts"
 full_compose_profiles="COMPOSE_PROFILES="
+if $ANVIL; then
+    full_compose_profiles+="$anvil_profile,"
+fi
 if $BLOCKTIME; then
     full_compose_profiles+="$blocktime_profile,"
 fi
@@ -187,6 +197,13 @@ echo $full_compose_profiles >>.env
 # cat env.common and env.ports to the .env file
 echo "" >>.env
 cat env/env.common >> .env
+
+# optionally cat env.anvil to .env file if --anvil
+if $ANVIL; then
+    echo "" >>.env
+    cat env/env.anvil >>.env
+fi
+
 echo "" >>.env
 cat env/env.ports >>.env
 
@@ -195,12 +212,6 @@ cat env/env.ports >>.env
 echo "" >>.env
 cat env/env.images >>.env
 source env/env.images
-
-# optionally cat env.anvil to .env file if --anvil
-if $ANVIL; then
-    echo "" >>.env
-    cat env/env.anvil >>.env
-fi
 
 # optionally add an env.time to .env file if --blocktime
 if $BLOCKTIME; then
@@ -220,6 +231,11 @@ fi
 if $POSTGRES || $DATA || $SERVICE_BOT || $RANDOM_BOT || $RATE_BOT; then
     echo "" >>.env
     cat env/env.postgres >> .env
+fi
+
+if $SERVICE_BOT; then
+    echo "" >>.env
+    cat env/env.bots >> .env
 fi
 
 echo "Environment filed created at .env"
