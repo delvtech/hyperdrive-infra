@@ -11,8 +11,9 @@ if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
     echo "  --develop              : Fund accounts and enable anvil, data, and ports. Suitable for local development work."
     echo "  --remote-service-bots  : Runs service bots on a remote chain."
     echo "Flags:"
-    echo "  --anvil                : Spin up an Anvil node, deploy Hyperdrive to it, and serve artifacts on an nginx server."
-    echo "  --blocktime            : Sets the anvil node to run in blocktime mode."
+    echo "  --anvil                : Spin up a fresh Anvil node, deploy Hyperdrive to it, and serve artifacts for the fresh deploy on an nginx server."
+    echo "  --blocktime            : Sets the anvil node to run in blocktime mode. (not included in --all)"
+    echo "  --fork                 : Sets the anvil node to fork mainnet. (not included in --all)"
     echo "  --testnet              : Uses the testnet hyperdrive image with restricted mint access."
     echo "  --frontend             : Build the frontend container."
     echo "  --postgres             : Runs a postgres db container for storing data."
@@ -28,6 +29,7 @@ fi
 # Parse all of the arguments
 ## Initialize variables
 ANVIL=false
+FORK=false
 BLOCKTIME=false
 TESTNET=false
 FRONTEND=false
@@ -46,6 +48,7 @@ while [[ $# -gt 0 ]]; do
         --all)
             ANVIL=true
             # Don't run blocktime here, we want chain to be in fast mode
+            # Don't run fork here, forks cannot save/load state
             # Don't run testnet image here since random bots need to be able to mint
             FRONTEND=true
             POSTGRES=true
@@ -74,6 +77,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --blocktime)
             BLOCKTIME=true
+            ;;
+        --fork)
+            FORK=true
             ;;
         --testnet)
             TESTNET=true
@@ -117,6 +123,7 @@ echo "# Environment for Docker compose" >>.env
 # turned on using docker compose profiles.
 anvil_compose="docker-compose.anvil.yaml"
 blocktime_compose="docker-compose.blocktime.yaml"
+fork_compose="docker-compose.fork.yaml"
 testnet_compose="docker-compose.testnet.yaml"
 frontend_compose="docker-compose.frontend.yaml"
 postgres_compose="docker-compose.postgres.yaml"
@@ -129,6 +136,9 @@ full_compose_files="COMPOSE_FILE=$anvil_compose:$frontend_compose:$postgres_comp
 # We only add controls here if these compose files update existing services.
 if $BLOCKTIME; then
     full_compose_files+="$blocktime_compose:"
+fi
+if $FORK; then
+    full_compose_files+="$fork_compose:"
 fi
 if $TESTNET; then
     full_compose_files+="$testnet_compose:"
@@ -150,6 +160,7 @@ echo $full_compose_files >>.env
 # should be started.
 anvil_profile="anvil"
 blocktime_profile="blocktime"
+fork_profile="fork"
 frontend_profile="frontend"
 postgres_profile="postgres"
 data_profile="data"
@@ -163,6 +174,9 @@ if $ANVIL; then
 fi
 if $BLOCKTIME; then
     full_compose_profiles+="$blocktime_profile,"
+fi
+if $FORK; then
+    full_compose_profiles+="$fork_profile,"
 fi
 if $FRONTEND; then
     full_compose_profiles+="$frontend_profile,"
@@ -199,9 +213,14 @@ echo "" >>.env
 cat env/env.common >> .env
 
 # optionally cat env.anvil to .env file if --anvil
+# set fork url if FORK is true
+# set block time if BLOCKTIME is true
 if $ANVIL; then
     echo "" >>.env
-    cat env/env.anvil >>.env
+    cat env/env.anvil >> .env
+    echo "" >>.env
+    [[ $FORK = true ]] && echo "ANVIL_STATE_SOURCE='--fork-url <must provide mainnet rpc endpoint>'" >> .env || echo \'ANVIL_STATE_SOURCE='--load-state ./data'\' >>.env
+    [[ $BLOCKTIME = true ]] && echo ANVIL_BLOCKTIME='--block-time ${BLOCK_TIME}' >>.env
 fi
 
 echo "" >>.env
@@ -226,7 +245,7 @@ if $FRONTEND; then
 fi
 
 # optionally add an env.frontend to .env file if --postgres or --data
-# POSTGRES uses these flags to launch postgres. 
+# POSTGRES uses these flags to launch postgres.
 # All agent0 images uses these flags to connect
 if $POSTGRES || $DATA || $SERVICE_BOT || $RANDOM_BOT || $RATE_BOT; then
     echo "" >>.env

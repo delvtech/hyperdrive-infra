@@ -1,0 +1,54 @@
+services:
+  deployer:
+    image: ${DEVNET_IMAGE}
+    command: |
+      '/src/scripts/configure-clone.sh'
+    restart: on-failure
+    env_file:
+      - .env
+    volumes:
+      - artifacts:/src/artifacts/
+
+  artifacts:
+    image: ${ARTIFACTS_IMAGE}
+    volumes:
+      - artifacts:/var/www/artifacts/
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+  yield-bot:
+    image: ${DEVNET_IMAGE}
+    command: |
+      'cp /src/artifacts/deployments.local.json /src/deployments.local.json && npx hardhat fork:maintain-rate --network mainnet_fork --config hardhat.config.mainnet_fork.ts --show-stack-traces'
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - artifacts:/src/artifacts/
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+  checkpoint-bot:
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+  invariance-check-bot:
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+  random-bot:
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+  data:
+    depends_on:
+      deployer:
+        condition: service_completed_successfully
+
+volumes:
+  artifacts:
