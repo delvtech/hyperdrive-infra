@@ -7,9 +7,11 @@ services:
     # as soon as transactions are received, or with manual commands.
     # this is "hecking fast" mode.
     command: |
-      'anvil --load-state ./data --host 0.0.0.0 --code-size-limit 9999999999 --chain-id ${CHAIN_ID}'
+      'anvil ${ANVIL_STATE_SOURCE} ${ANVIL_BLOCKTIME} --chain-id=${CHAIN_ID} --host 0.0.0.0 --code-size-limit 9999999999'
     volumes:
       - artifacts:/src/artifacts/
+    env_file:
+      - .env
 
   # Mine the first block to prevent overflow/underflow errors on the first
   # read calls.
@@ -45,7 +47,6 @@ services:
       - artifacts:/artifacts/
     env_file:
       - .env
-
 
 volumes:
   artifacts:
