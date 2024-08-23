@@ -15,7 +15,7 @@ services:
       - "service-bot" 
     restart: always
     command: |
-      /bin/sh -c "sleep 1; python scripts/invariant_checks.py --pool-check-sleep-blocks 30 --infra"
+      /bin/sh -c "sleep 1; python scripts/invariant_checks.py --infra --rollbar-verbose"
     env_file:
       - .env
   
