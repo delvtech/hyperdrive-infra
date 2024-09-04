@@ -64,7 +64,6 @@ while [[ $# -gt 0 ]]; do
             FUND_ACCOUNTS=true
             ;;
         --remote-service-bots)
-            POSTGRES=true
             PORTS=true
             SERVICE_BOT=true
             ;;
